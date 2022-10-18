@@ -1,7 +1,7 @@
 # Simulink
 
 ## Parameter Buses
-The Atrial and Ventricular Buses are structured identically so that they can be used interchangably.
+Most parameters are stored on the General Bus. The Atrial and Ventricular Buses are structured identically so that they can be used interchangably.
 
 These parameters and their units were obtained from the PACEMAKER document, table 6 and 7.
 
@@ -9,6 +9,7 @@ Format:<br>
 ```SIMULINK_VARIABLE_NAME``` - Full Description - ```[units]```
 
 1. ```BusGEN.```
+    - ```MODE``` - Operating Mode - ```[ENUM]```
     - ```LRL``` - Lower Rate Limit - ```[BPM]```
     - ```URL``` - Upper Rate Limit - ```[BPM]```
     - ```MAX_SENSOR_RATE``` - Maximum Sensor Rate - ```[BPM]```
