@@ -26,13 +26,46 @@ Format:<br>
     - ```REACTION_TIME``` - Reaction Time - ```[sec]```
     - ```RESPONSE_FACTOR``` - Response Factor - ```[int]```
     - ```RECOVERY_TIME``` - Recovery Time - ```[min]```
-2. ```BusATR.```
-    - ```AMP``` - Atrial Amplitude - ```[V]```
-    - ```PULSE_WIDTH``` - Atrial Pulse Width - ```[ms]```
-    - ```SENSITIVITY``` - Atrial Sensitivity - ```[V]```
-    - ```RP``` - Atrial Refactory Period - ```[ms]```
-3. ```BusVENT.```
-    - ```AMP``` - Ventricular Sensitivity - ```[V]```
-    - ```PULSE_WIDTH``` - Ventricular Pulse Width - ```[ms]```
-    - ```SENSITIVITY``` - Ventricular Sensitivity - ```[V]```
-    - ```RP``` - Ventricular Refractory Period - ```[ms]```
+2. ```BusSPECIFIC.```
+    - ```AMP``` - A/V Amplitude - ```[V]```
+    - ```PULSE_WIDTH``` - A/V Pulse Width - ```[ms]```
+    - ```SENSITIVITY``` - A/V Sensitivity - ```[V]```
+    - ```RP``` - A/V Refactory Period - ```[ms]```
+3. ```BusMEASURED```
+    - ```R_WAVE``` - R Wave Measurements - ```[mV]```
+    - ```P_WAVE``` - P Wave Measurements - ```[mV]```
+    - ```LEAD_IMPEDANCE``` - Lead Impedance - ```[Ohm]```
+    - ```BATTERY_VOLTAGE``` - Battery Voltage - ```[V]```
+## Enumerations
+### MODE
+| Name | Value |
+|:-----|:-----:|
+|Off|0|
+|DDD|1|
+|VDD|2|
+|DDI|3|
+|DOO|4|
+|AOO|5|
+|AAI|6|
+|VOO|7|
+|VVI|8|
+|AAT|9|
+|VVT|10|
+|DDDR|11|
+|VDDR|12|
+|DDIR|13|
+|DOOR|14|
+|AOOR|15|
+|AAIR|16|
+|VOOR|17|
+|VVIR|18|
+### ACT_THRESH
+| Name | Value |
+|:-----|:-----:|
+|VLOW|0|
+|LOW|1|
+|MEDLOW|2|
+|MED|3|
+|MEDHIGH|4|
+|HIGH|5|
+|VHIGH|6|
