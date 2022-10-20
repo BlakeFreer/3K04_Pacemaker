@@ -1,2 +1,5 @@
 *.lnk
 *.slxc
+*.bin
+*.elf
+*.hex
