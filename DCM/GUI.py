@@ -47,24 +47,57 @@ password_input.bind('<FocusOut>', pass_out)
 
 #Sign in
 def sign_in():
+
 	username = username_input.get()
 	password = password_input.get()
+
+	options = [
+		"Off", 
+		"DDD", 
+		"VDD", 
+		"DDI", 
+		"DOO", 
+		"AOO", 
+		"AAI", 
+		"VOO", 
+		"VVI", 
+		"AAT", 
+		"VVT", 
+		"DDDR", 
+		"VDDR", 
+		"DDIR", 
+		"DOOR", 
+		"AOOR", 
+		"AAIR", 
+		"VOOR", 
+		"VVIR"
+	]
+
+	clicked = StringVar()
+	clicked.set(options[0])
+
 
 	file = open('database.txt', 'r')
 	r = ast.literal_eval(file.read())
 	file.close()
 
 	if username in r.keys() and password == r[username]:
-		print('login success')
+		screen = Toplevel(root)
+		screen.title("Pacemaker DCM System Dashboard")
+		screen.config(bg = "white")
+		drop = OptionMenu(screen, clicked, *options)
+		drop.pack()
+
+		screen.mainloop()
 
 	else:
 		messagebox.showerror("Invalid", "Invalid username/password. Please try again.")
 
 ##############################################################################################
 #Create Account Buttons
-def sign_up():
+def sign_up_account():
 
-	window = Toplevel(root)
+	window = Tk()
 	window.title("Create an account")
 	window.geometry("950x400")
 	window.configure(bg='#838383')
@@ -187,7 +220,7 @@ def sign_up():
 
 ##############################################################################################
 myButton1 = Button(root, text="Sign In", padx = 30, pady = 5, bg="red", command = sign_in)
-myButton2 = Button(root, text="Create Account", padx = 30, pady = 5, bg="orange", command = sign_up)
+myButton2 = Button(root, text="Create Account", padx = 30, pady = 5, bg="orange", command = sign_up_account)
 
 
 #Fireball
