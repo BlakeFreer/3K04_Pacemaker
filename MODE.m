@@ -20,5 +20,9 @@ classdef MODE < Simulink.IntEnumType
         VOOR(17)
         VVIR(18)
     end
-
+    methods (Static)
+        function retVal = getDefaultValue()
+            retVal = MODE.Off;
+        end
+    end
 end
