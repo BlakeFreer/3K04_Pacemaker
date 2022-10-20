@@ -8,6 +8,10 @@ classdef ACT_THRESH < Simulink.IntEnumType
         HIGH(5)
         VHIGH(6)
     end
-    
+    methods (Static)
+        function retVal = getDefaultValue()
+            retVal = ACT_THRESH.VLOW;
+        end
+    end
 end
 
