@@ -11,7 +11,7 @@ root_img = PhotoImage(file = "DCM/images/MacFireball.png")
 root.iconphoto(False,root_img)
 root.geometry ("950x400")
 root.configure(bg = "black")
-root.resizable(False,False)
+# root.resizable(False,False)
 
 
 #Username interface
@@ -51,6 +51,10 @@ def sign_in():
 	username = username_input.get()
 	password = password_input.get()
 
+	file = open('database.txt', 'r')
+	r = ast.literal_eval(file.read())
+	file.close()
+
 	options = [
 		"Off", 
 		"DDD", 
@@ -73,23 +77,24 @@ def sign_in():
 		"VVIR"
 	]
 
+
 	clicked = StringVar()
 	clicked.set(options[0])
 
-
-	file = open('database.txt', 'r')
-	r = ast.literal_eval(file.read())
-	file.close()
 
 	if username in r.keys() and password == r[username]:
 		screen = Toplevel(root)
 		screen.title("Pacemaker DCM System Dashboard")
 		screen.config(bg = "white")
-		drop = OptionMenu(screen, clicked, *options)
-		drop.pack()
+		screen.geometry("500x350")
+		screen.resizable(False, False)
+
+		drop = OptionMenu(screen, clicked, *options).place(x = 230, y = 15)
+		# Implement arrows
+
+		
 
 		screen.mainloop()
-
 	else:
 		messagebox.showerror("Invalid", "Invalid username/password. Please try again.")
 
