@@ -1,6 +1,7 @@
 from tkinter import *
 from PIL import ImageTk,Image
 from tkinter import messagebox
+from tkinter import ttk
 import ast
 
 
@@ -11,7 +12,7 @@ root_img = PhotoImage(file = "DCM/images/MacFireball.png")
 root.iconphoto(False,root_img)
 root.geometry ("950x400")
 root.configure(bg = "black")
-# root.resizable(False,False)
+root.resizable(False,False)
 
 
 #Username interface
@@ -21,11 +22,13 @@ def user_in(e):
 def user_out(e):
 	username = username_input.get()
 	if username == '':
-		username_input.insert(0,'Username@example.com')
+		#username_input.insert(0,'Username@example.com')
+		username_input.insert(0,'user')
 
 username_input = Entry(root, width = 35, font=("Helvetica", 12))
 # username_input.pack(padx = 10, pady = 10)
-username_input.insert(0, "Username@example.com")
+#username_input.insert(0, "Username@example.com")
+username_input.insert(0, "user")
 username_input.bind('<FocusIn>', user_in)
 username_input.bind('<FocusOut>', user_out)
 
@@ -37,11 +40,13 @@ def pass_in(e):
 def pass_out(e):
 	password = password_input.get()
 	if password == '':
-		password_input.insert(0,'Password123')
+		#password_input.insert(0,'Password123')
+		password_input.insert(0,'pass')
 
 password_input = Entry(root, show = "*", width = 35, font=("Helvetica", 12))
 # password_input.pack(padx = 10, pady = 10)
-password_input.insert(0, "Password123")
+#password_input.insert(0, "Password123")
+password_input.insert(0, "pass")
 password_input.bind('<FocusIn>', pass_in)
 password_input.bind('<FocusOut>', pass_out)
 
@@ -51,11 +56,7 @@ def sign_in():
 	username = username_input.get()
 	password = password_input.get()
 
-	file = open('database.txt', 'r')
-	r = ast.literal_eval(file.read())
-	file.close()
-
-	options = [
+	modes = [
 		"Off", 
 		"DDD", 
 		"VDD", 
@@ -77,24 +78,74 @@ def sign_in():
 		"VVIR"
 	]
 
-
 	clicked = StringVar()
-	clicked.set(options[0])
+	clicked.set(modes[0])
 
+
+	file = open('DCM/database.txt', 'r')
+	r = ast.literal_eval(file.read())
+	file.close()
 
 	if username in r.keys() and password == r[username]:
+		#setting up window interface
 		screen = Toplevel(root)
 		screen.title("Pacemaker DCM System Dashboard")
 		screen.config(bg = "white")
-		screen.geometry("500x350")
-		screen.resizable(False, False)
 
-		drop = OptionMenu(screen, clicked, *options).place(x = 230, y = 15)
-		# Implement arrows
+		#mode selection
+		drop = OptionMenu(screen, clicked, *modes)
+		drop.pack()
 
-		
+		frame = Frame(screen)
+		frame.pack()
+
+		parameter_frame = LabelFrame(frame, text = "Parameters", font = ("Helvetica", 20))
+		parameter_frame.grid(row = 0, column = 0, padx = 20, pady = 20)
+
+		LRL_label = Label(parameter_frame, text = "Lower Rate Limit (ppm)", font = ("Helvetica", 20))
+		URL_label = Label(parameter_frame, text = "Upper Rate Limit (ppm)", font = ("Helvetica", 20))
+		APAR_label = Label(parameter_frame, text = "Atrial Pulse Amplitude Regulated (V)", font = ("Helvetica", 20))
+		APW_label = Label(parameter_frame, text = "Atrial Pulse Width (ms)", font = ("Helvetica", 20))
+		VPAR_label = Label(parameter_frame, text = "Ventricular Pulse Amplitude Regulated (V)", font = ("Helvetica", 20))
+		VPW_label = Label(parameter_frame, text = "Ventricular Pulse Width (ms)", font = ("Helvetica", 20))	 
+		VRP_label = Label(parameter_frame, text = "Ventricular Refractory Period (ms)", font = ("Helvetica", 20))
+		ARP_label = Label(parameter_frame, text = "Atrial Refractory Period (ms)", font = ("Helvetica", 20))
+
+		LRL_label.grid(row = 0, column = 0)
+		URL_label.grid(row = 0, column = 1)	
+		APAR_label.grid(row = 0, column = 2)
+		APW_label.grid(row = 0, column = 3)
+		VPAR_label.grid(row = 2, column = 0)
+		VPW_label.grid(row = 2, column = 1)
+		VRP_label.grid(row = 2, column = 2)
+		ARP_label.grid(row = 2, column = 3)
+
+
+		LRL_spinbox = Spinbox(parameter_frame, from_ = 30, to = 175, increment = 5, font = ("Helvetica", 20))
+		URL_spinbox = Spinbox(parameter_frame, from_ = 50, to = 175, increment = 5, font = ("Helvetica", 20))
+		APAR_spinbox = Spinbox(parameter_frame, from_ = 0.5, to = 7.0, increment = 0.1, font = ("Helvetica", 20))
+		APW_spinbox = Spinbox(parameter_frame, from_ = 0.05, to = 1.9, increment = 0.1, font = ("Helvetica", 20))
+		VPAR_spinbox = Spinbox(parameter_frame, from_ = 0.5, to = 7.0, increment = 0.1, font = ("Helvetica", 20))
+		VPW_spinbox = Spinbox(parameter_frame, from_ = 0.05, to = 1.9, increment = 0.1, font = ("Helvetica", 20))
+		VRP_spinbox = Spinbox(parameter_frame, from_ = 150, to = 500, increment = 10, font = ("Helvetica", 20))
+		ARP_spinbox = Spinbox(parameter_frame, from_ = 150, to = 500, increment = 10, font = ("Helvetica", 20))
+
+		LRL_spinbox.grid(row = 1, column = 0)
+		URL_spinbox.grid(row = 1, column = 1)		
+		APAR_spinbox.grid(row = 1, column = 2)
+		APW_spinbox.grid(row = 1, column = 3)
+		VPAR_spinbox.grid(row = 3, column = 0)
+		VPW_spinbox.grid(row = 3, column = 1)
+		VRP_spinbox.grid(row = 3, column = 2)
+		ARP_spinbox.grid(row = 3, column = 3)
+
+
+		#Create padding for spinboxes
+		for widget in parameter_frame.winfo_children():
+			widget.grid_configure(padx = 10, pady =5)
 
 		screen.mainloop()
+
 	else:
 		messagebox.showerror("Invalid", "Invalid username/password. Please try again.")
 
@@ -102,7 +153,7 @@ def sign_in():
 #Create Account Buttons
 def sign_up_account():
 
-	window = Tk()
+	window = Toplevel(root)
 	window.title("Create an account")
 	window.geometry("950x400")
 	window.configure(bg='#838383')
@@ -118,7 +169,7 @@ def sign_up_account():
 		if password_input == password2_input:
 			#Read file and write data
 			try:
-				file = open('database.txt', 'r+')
+				file = open('DCM/database.txt', 'r+')
 				r = ast.literal_eval(file.read())
 
 				#store username/password in hashmap
@@ -127,7 +178,7 @@ def sign_up_account():
 				file.truncate(0)
 				file.close()
 
-				file = open('database.txt', 'w')
+				file = open('DCM/database.txt', 'w')
 				w = file.write(str(r))
 
 				messagebox.showinfo('Registration', 'Congratulations! You have successfully signed up.')
@@ -135,7 +186,7 @@ def sign_up_account():
 
 			#Create database.txt file
 			except:
-				file = open('database.txt', 'w')
+				file = open('DCM/database.txt', 'w')
 				dictionary2 = str({'Username':'Password'})
 				file.write(dictionary2)
 				file.close()
