@@ -102,14 +102,14 @@ def sign_in():
 		parameter_frame = LabelFrame(frame, text = "Parameters", font = ("Helvetica", 20))
 		parameter_frame.grid(row = 0, column = 0, padx = 20, pady = 20)
 
-		LRL_label = Label(parameter_frame, text = "Lower Rate Limit (ppm)", font = ("Helvetica", 20))
-		URL_label = Label(parameter_frame, text = "Upper Rate Limit (ppm)", font = ("Helvetica", 20))
-		APAR_label = Label(parameter_frame, text = "Atrial Pulse Amplitude Regulated (V)", font = ("Helvetica", 20))
-		APW_label = Label(parameter_frame, text = "Atrial Pulse Width (ms)", font = ("Helvetica", 20))
-		VPAR_label = Label(parameter_frame, text = "Ventricular Pulse Amplitude Regulated (V)", font = ("Helvetica", 20))
-		VPW_label = Label(parameter_frame, text = "Ventricular Pulse Width (ms)", font = ("Helvetica", 20))	 
-		VRP_label = Label(parameter_frame, text = "Ventricular Refractory Period (ms)", font = ("Helvetica", 20))
-		ARP_label = Label(parameter_frame, text = "Atrial Refractory Period (ms)", font = ("Helvetica", 20))
+		LRL_label = Label(parameter_frame, text = "Lower Rate Limit (ppm)", font = ("Helvetica", 15))
+		URL_label = Label(parameter_frame, text = "Upper Rate Limit (ppm)", font = ("Helvetica", 15))
+		APAR_label = Label(parameter_frame, text = "Atrial Pulse Amplitude Regulated (V)", font = ("Helvetica", 15))
+		APW_label = Label(parameter_frame, text = "Atrial Pulse Width (ms)", font = ("Helvetica", 15))
+		VPAR_label = Label(parameter_frame, text = "Ventricular Pulse Amplitude Regulated (V)", font = ("Helvetica", 15))
+		VPW_label = Label(parameter_frame, text = "Ventricular Pulse Width (ms)", font = ("Helvetica", 15))	 
+		VRP_label = Label(parameter_frame, text = "Ventricular Refractory Period (ms)", font = ("Helvetica", 15))
+		ARP_label = Label(parameter_frame, text = "Atrial Refractory Period (ms)", font = ("Helvetica", 15))
 
 		LRL_label.grid(row = 0, column = 0)
 		URL_label.grid(row = 0, column = 1)	
@@ -121,14 +121,28 @@ def sign_in():
 		ARP_label.grid(row = 2, column = 3)
 
 
-		LRL_spinbox = Spinbox(parameter_frame, from_ = 30, to = 175, increment = 5, font = ("Helvetica", 20))
-		URL_spinbox = Spinbox(parameter_frame, from_ = 50, to = 175, increment = 5, font = ("Helvetica", 20))
-		APAR_spinbox = Spinbox(parameter_frame, from_ = 0.5, to = 7.0, increment = 0.1, font = ("Helvetica", 20))
-		APW_spinbox = Spinbox(parameter_frame, from_ = 0.05, to = 1.9, increment = 0.1, font = ("Helvetica", 20))
-		VPAR_spinbox = Spinbox(parameter_frame, from_ = 0.5, to = 7.0, increment = 0.1, font = ("Helvetica", 20))
-		VPW_spinbox = Spinbox(parameter_frame, from_ = 0.05, to = 1.9, increment = 0.1, font = ("Helvetica", 20))
-		VRP_spinbox = Spinbox(parameter_frame, from_ = 150, to = 500, increment = 10, font = ("Helvetica", 20))
-		ARP_spinbox = Spinbox(parameter_frame, from_ = 150, to = 500, increment = 10, font = ("Helvetica", 20))
+		LRL_spinbox = Spinbox(parameter_frame, from_ = 30, to = 175, increment = 5, font = ("Helvetica", 15))
+		URL_spinbox = Spinbox(parameter_frame, from_ = 50, to = 175, increment = 5, font = ("Helvetica", 15))
+		APAR_spinbox = Spinbox(parameter_frame, from_ = 0.5, to = 7.0, increment = 0.1, font = ("Helvetica", 15))
+		APW_spinbox = Spinbox(parameter_frame, from_ = 0.05, to = 1.9, increment = 0.1, font = ("Helvetica", 15))
+		VPAR_spinbox = Spinbox(parameter_frame, from_ = 0.5, to = 7.0, increment = 0.1, font = ("Helvetica", 15))
+		VPW_spinbox = Spinbox(parameter_frame, from_ = 0.05, to = 1.9, increment = 0.1, font = ("Helvetica", 15))
+		VRP_spinbox = Spinbox(parameter_frame, from_ = 150, to = 500, increment = 10, font = ("Helvetica", 15))
+		ARP_spinbox = Spinbox(parameter_frame, from_ = 150, to = 500, increment = 10, font = ("Helvetica", 15))
+
+		def output_params():
+			LRL = LRL_spinbox.get()
+			URL = URL_spinbox.get()
+			APAR = APAR_spinbox.get()
+			APW = APW_spinbox.get()
+			VPAR = VPAR_spinbox.get()
+			VPW = VPW_spinbox.get()
+			VRP = VRP_spinbox.get()
+			ARP = ARP_spinbox.get()
+
+			print(LRL)
+		
+		myButton3 = Button(screen, text="Select", padx = 30, pady = 5, bg="red", command = output_params)
 
 		LRL_spinbox.grid(row = 1, column = 0)
 		URL_spinbox.grid(row = 1, column = 1)		
@@ -138,6 +152,7 @@ def sign_in():
 		VPW_spinbox.grid(row = 3, column = 1)
 		VRP_spinbox.grid(row = 3, column = 2)
 		ARP_spinbox.grid(row = 3, column = 3)
+		myButton3.pack()
 
 
 		#Create padding for spinboxes
