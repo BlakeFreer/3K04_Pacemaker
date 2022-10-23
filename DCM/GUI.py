@@ -50,12 +50,15 @@ password_input.insert(0, "pass")
 password_input.bind('<FocusIn>', pass_in)
 password_input.bind('<FocusOut>', pass_out)
 
+
+
+
 #Sign in
 def sign_in():
-
 	username = username_input.get()
 	password = password_input.get()
 
+	#Values for modes/parameters
 	modes = [
 		"Off", 
 		"DDD", 
@@ -78,6 +81,35 @@ def sign_in():
 		"VVIR"
 	]
 
+	LRL = (30, 35, 40, 45, 50, 
+		   51, 52, 53, 54, 55, 
+		   56, 57, 58, 59, 60, 
+		   61, 62, 63, 64, 65, 
+		   66, 67, 68, 69, 70, 
+		   71, 72, 73, 74, 75, 
+		   76, 77, 78, 79, 80, 
+	       81, 82, 83, 84, 85, 
+	       86, 87, 88, 89, 90, 
+		   95, 100, 105, 110, 115, 
+		  120, 125, 130, 135, 140, 
+	      145, 150, 155, 160, 165, 
+		  170, 175) 
+
+	AV_PAR = ("Off", 0.5, 0.6, 0.7, 0.8, 0.9,
+				1.0, 1.1, 1.2, 1.3, 1.4, 1.5, 
+				1.6, 1.7, 1.8, 1.9, 2.0, 2.1, 
+				2.2, 2.3, 2.4, 2.5, 2.6, 2.7, 
+			    2.8, 2.9, 3.0, 3.1, 3.2, 3.5, 
+			    4.0, 4.5, 5.0, 5.5, 6.0, 6.5, 
+			    7.0)
+
+	AV_PW = (0.05, 0.1, 0.2, 0.3, 0.4, 0.5, 
+		      0.6, 0.7, 0.8, 0.9, 1.0, 1.1, 
+		      1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 
+		      1.8, 1.9)
+
+
+	#drop down menu for modes
 	clicked = StringVar()
 	clicked.set(modes[0])
 
@@ -91,6 +123,8 @@ def sign_in():
 		screen = Toplevel(root)
 		screen.title("Pacemaker DCM System Dashboard")
 		screen.config(bg = "white")
+		screen_img = PhotoImage(file = "DCM/images/MacFireball.png")
+		screen.iconphoto(False,root_img)
 
 		#mode selection
 		drop = OptionMenu(screen, clicked, *modes)
@@ -111,27 +145,18 @@ def sign_in():
 		VRP_label = Label(parameter_frame, text = "Ventricular Refractory Period (ms)", font = ("Helvetica", 15))
 		ARP_label = Label(parameter_frame, text = "Atrial Refractory Period (ms)", font = ("Helvetica", 15))
 
-		LRL_label.grid(row = 0, column = 0)
-		URL_label.grid(row = 0, column = 1)	
-		APAR_label.grid(row = 0, column = 2)
-		APW_label.grid(row = 0, column = 3)
-		VPAR_label.grid(row = 2, column = 0)
-		VPW_label.grid(row = 2, column = 1)
-		VRP_label.grid(row = 2, column = 2)
-		ARP_label.grid(row = 2, column = 3)
-
-
-		LRL_spinbox = Spinbox(parameter_frame, from_ = 30, to = 175, increment = 5, font = ("Helvetica", 15))
+		LRL_spinbox = Spinbox(parameter_frame, values = LRL, font = ("Helvetica", 15))
 		URL_spinbox = Spinbox(parameter_frame, from_ = 50, to = 175, increment = 5, font = ("Helvetica", 15))
-		APAR_spinbox = Spinbox(parameter_frame, from_ = 0.5, to = 7.0, increment = 0.1, font = ("Helvetica", 15))
-		APW_spinbox = Spinbox(parameter_frame, from_ = 0.05, to = 1.9, increment = 0.1, font = ("Helvetica", 15))
+		APAR_spinbox = Spinbox(parameter_frame, values = AV_PAR, font = ("Helvetica", 15))
+		APW_spinbox = Spinbox(parameter_frame, values = AV_PW, increment = 0.1, font = ("Helvetica", 15))
 		# format = "%2f" for floats
-		VPAR_spinbox = Spinbox(parameter_frame, from_ = 0.5, to = 7.0, increment = 0.1, font = ("Helvetica", 15))
-		VPW_spinbox = Spinbox(parameter_frame, from_ = 0.05, to = 1.9, increment = 0.1, font = ("Helvetica", 15))
+		VPAR_spinbox = Spinbox(parameter_frame, values = AV_PAR, font = ("Helvetica", 15))
+		VPW_spinbox = Spinbox(parameter_frame, values = AV_PW, font = ("Helvetica", 15))
 		VRP_spinbox = Spinbox(parameter_frame, from_ = 150, to = 500, increment = 10, font = ("Helvetica", 15))
 		ARP_spinbox = Spinbox(parameter_frame, from_ = 150, to = 500, increment = 10, font = ("Helvetica", 15))
 
 		def output_params():
+			mode = clicked.get()
 			LRL = LRL_spinbox.get()
 			URL = URL_spinbox.get()
 			APAR = APAR_spinbox.get()
@@ -142,6 +167,7 @@ def sign_in():
 			ARP = ARP_spinbox.get()
 
 			output_dict = {
+				"Mode": mode,
 				"LRL": LRL,
 				"URL": URL,
 				"APAR": APAR,
@@ -156,14 +182,24 @@ def sign_in():
 		
 		myButton3 = Button(screen, text="Select", padx = 30, pady = 5, bg="red", command = output_params)
 
+
+		LRL_label.grid(row = 0, column = 0)
+		URL_label.grid(row = 0, column = 1)	
+		APAR_label.grid(row = 2, column = 0)
+		APW_label.grid(row = 4, column = 0)
+		VPAR_label.grid(row = 2, column = 1)
+		VPW_label.grid(row = 4, column = 1)
+		VRP_label.grid(row = 6, column = 1)
+		ARP_label.grid(row = 6, column = 0)
+
 		LRL_spinbox.grid(row = 1, column = 0)
 		URL_spinbox.grid(row = 1, column = 1)		
-		APAR_spinbox.grid(row = 1, column = 2)
-		APW_spinbox.grid(row = 1, column = 3)
-		VPAR_spinbox.grid(row = 3, column = 0)
-		VPW_spinbox.grid(row = 3, column = 1)
-		VRP_spinbox.grid(row = 3, column = 2)
-		ARP_spinbox.grid(row = 3, column = 3)
+		APAR_spinbox.grid(row = 3, column = 0)
+		APW_spinbox.grid(row = 5, column = 0)
+		VPAR_spinbox.grid(row = 3, column = 1)
+		VPW_spinbox.grid(row = 5, column = 1)
+		VRP_spinbox.grid(row = 7, column = 1)
+		ARP_spinbox.grid(row = 7, column = 0)
 		myButton3.pack()
 
 
@@ -179,13 +215,14 @@ def sign_in():
 ##############################################################################################
 #Create Account Buttons
 def sign_up_account():
-
+	#Window interface
 	window = Toplevel(root)
 	window.title("Create an account")
 	window.geometry("950x400")
 	window.configure(bg='white')
 	window.resizable(False,False)
-
+	window_img = PhotoImage(file = "DCM/images/MacFireball.png")
+	window.iconphoto(False,root_img)
 
 	#Store username/passwords in a text file
 	def sign_up():
@@ -236,16 +273,9 @@ def sign_up_account():
 
 
 
-
+	#signup interface
 	img = PhotoImage(file = "DCM/images/heart.png")
 	Label(window, image = img, border = 0, bg = 'white').place(x = 50, y = 10)
-	#Fire logo
-	#fire_img = Image.open("DCM/images/FlameLogo.png")
-	#resized_fire_img = fire_img.resize((500,400))
-	#fire_img = ImageTk.PhotoImage(resized_fire_img)
-	#fire_label = Label(image = fire_img)
-
-	#fire_label.grid(row = 0, column = 0, rowspan = 6)
 
 	frame = Frame(window, width = 350, height = 300, bg = '#fff')
 	frame.place(x = 555, y = 50)
@@ -303,9 +333,6 @@ def sign_up_account():
 	Frame(frame, width = 295, height = 2, bg = 'black').place(x = 25, y = 247)
 
 
-
-
-
 	myButton1 = Button(frame, width = 39, pady = 7, text = 'Sign up', bg = 'pink', fg = 'black', border = 0, font = 'Helvetica 9 bold', command = sign_up).place(x = 35, y = 260)
 	myButton2 = Button(frame, width = 6, text = 'Login', border = 0, bg = 'orange', cursor = 'hand2', fg = 'black', font=('Helvetica 9 bold'), command = sign_in).place(x = 300, y = 0)
 
@@ -316,12 +343,11 @@ myButton1 = Button(root, text="Sign In", padx = 30, pady = 5, bg="red", command 
 myButton2 = Button(root, text="Create Account", padx = 30, pady = 5, bg="orange", command = sign_up_account)
 
 
-#Fireball
-fire_img = Image.open("DCM/images/FlameLogo.png")
-resized_fire_img = fire_img.resize((500,400))
-fire_img = ImageTk.PhotoImage(resized_fire_img)
-fire_label = Label(image = fire_img)
-# fire_label.pack()
+#Heart
+heart_img = Image.open("DCM/images/heart.png")
+resized_heart_img = heart_img.resize((500,400))
+heart_img = ImageTk.PhotoImage(resized_heart_img)
+heart_label = Label(image = heart_img)
 
 
 #Welcome message
@@ -333,7 +359,7 @@ line_canvas.create_line(0, 5, 325, 5, fill="green", width=5)
 
 
 #positioning the user interface
-fire_label.grid(row = 0, column = 0, rowspan = 6)
+heart_label.grid(row = 0, column = 0, rowspan = 6)
 sign_in_canvas.grid(row = 0,column = 1, padx = 100, pady = 5)
 username_input.grid(row = 1, column = 1, padx = 100, pady = 5)
 password_input.grid(row = 2, column = 1, padx = 100, pady = 5)
