@@ -171,7 +171,7 @@ def sign_up_account():
 	window = Toplevel(root)
 	window.title("Create an account")
 	window.geometry("950x400")
-	window.configure(bg='#838383')
+	window.configure(bg='white')
 	window.resizable(False,False)
 
 
@@ -181,23 +181,31 @@ def sign_up_account():
 		password_input = password.get()
 		password2_input = password_confirm.get()
 
+
 		if password_input == password2_input:
 			#Read file and write data
 			try:
 				file = open('DCM/database.txt', 'r+')
 				r = ast.literal_eval(file.read())
 
-				#store username/password in hashmap
 				dictionary = {username_input:password_input}
+
 				r.update(dictionary)
 				file.truncate(0)
 				file.close()
 
-				file = open('DCM/database.txt', 'w')
-				w = file.write(str(r))
+				#store username/password in hashmap
+				if len(dictionary) < 3:
 
-				messagebox.showinfo('Registration', 'Congratulations! You have successfully signed up.')
-				window.destroy()
+					file = open('DCM/database.txt', 'w')
+					w = file.write(str(r))
+
+					messagebox.showinfo('Registration', 'Congratulations! You have successfully signed up.')
+					window.destroy()
+
+				else:
+					messagebox.showerror('Error', "Unfortunately your account was not created. There are a maximum of 10 members only.")
+
 
 			#Create database.txt file
 			except:
@@ -217,13 +225,15 @@ def sign_up_account():
 
 
 
+	img = PhotoImage(file = "DCM/images/heart.png")
+	Label(window, image = img, border = 0, bg = 'white').place(x = 50, y = 10)
 	#Fire logo
-	fire_img = Image.open("DCM/images/FlameLogo.png")
-	resized_fire_img = fire_img.resize((500,400))
-	fire_img = ImageTk.PhotoImage(resized_fire_img)
-	fire_label = Label(image = fire_img)
+	#fire_img = Image.open("DCM/images/FlameLogo.png")
+	#resized_fire_img = fire_img.resize((500,400))
+	#fire_img = ImageTk.PhotoImage(resized_fire_img)
+	#fire_label = Label(image = fire_img)
 
-	fire_label.grid(row = 0, column = 0, rowspan = 6)
+	#fire_label.grid(row = 0, column = 0, rowspan = 6)
 
 	frame = Frame(window, width = 350, height = 300, bg = '#fff')
 	frame.place(x = 555, y = 50)
@@ -284,8 +294,8 @@ def sign_up_account():
 
 
 
-	myButton1 = Button(frame, width = 39, pady = 7, text = 'Sign up', bg = 'orange', fg = 'black', border = 0, font = 'Helvetica 9 bold', command = sign_up).place(x = 35, y = 260)
-	myButton2 = Button(frame, width = 6, text = 'Login', border = 0, bg = 'white', cursor = 'hand2', fg = 'black', font=('Helvetica 9 bold'), command = sign_in).place(x = 300, y = 0)
+	myButton1 = Button(frame, width = 39, pady = 7, text = 'Sign up', bg = 'pink', fg = 'black', border = 0, font = 'Helvetica 9 bold', command = sign_up).place(x = 35, y = 260)
+	myButton2 = Button(frame, width = 6, text = 'Login', border = 0, bg = 'orange', cursor = 'hand2', fg = 'black', font=('Helvetica 9 bold'), command = sign_in).place(x = 300, y = 0)
 
 	window.mainloop()
 
