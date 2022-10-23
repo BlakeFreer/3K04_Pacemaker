@@ -125,6 +125,7 @@ def sign_in():
 		URL_spinbox = Spinbox(parameter_frame, from_ = 50, to = 175, increment = 5, font = ("Helvetica", 15))
 		APAR_spinbox = Spinbox(parameter_frame, from_ = 0.5, to = 7.0, increment = 0.1, font = ("Helvetica", 15))
 		APW_spinbox = Spinbox(parameter_frame, from_ = 0.05, to = 1.9, increment = 0.1, font = ("Helvetica", 15))
+		# format = "%2f" for floats
 		VPAR_spinbox = Spinbox(parameter_frame, from_ = 0.5, to = 7.0, increment = 0.1, font = ("Helvetica", 15))
 		VPW_spinbox = Spinbox(parameter_frame, from_ = 0.05, to = 1.9, increment = 0.1, font = ("Helvetica", 15))
 		VRP_spinbox = Spinbox(parameter_frame, from_ = 150, to = 500, increment = 10, font = ("Helvetica", 15))
@@ -140,7 +141,18 @@ def sign_in():
 			VRP = VRP_spinbox.get()
 			ARP = ARP_spinbox.get()
 
-			print(LRL)
+			output_dict = {
+				"LRL": LRL,
+				"URL": URL,
+				"APAR": APAR,
+				"APW": APW,
+				"VPAR": VPAR,
+				"VPW": VPW,
+				"VRP": VRP,
+				"ARP": ARP
+			}
+			#Printing selected parameters 
+			print(output_dict)
 		
 		myButton3 = Button(screen, text="Select", padx = 30, pady = 5, bg="red", command = output_params)
 
