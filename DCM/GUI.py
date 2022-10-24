@@ -21,13 +21,10 @@ def user_in(e):
 def user_out(e):
 	username = username_input.get()
 	if username == '':
-		#username_input.insert(0,'Username@example.com')
-		username_input.insert(0,'user')
+		username_input.insert(0,'Username@example.com')
 
 username_input = Entry(root, width = 35, font=("Helvetica", 12))
-# username_input.pack(padx = 10, pady = 10)
-#username_input.insert(0, "Username@example.com")
-username_input.insert(0, "user")
+username_input.insert(0, "Username@example.com")
 username_input.bind('<FocusIn>', user_in)
 username_input.bind('<FocusOut>', user_out)
 
@@ -39,12 +36,10 @@ def pass_in(e):
 def pass_out(e):
 	password = password_input.get()
 	if password == '':
-		#password_input.insert(0,'Password123')
-		password_input.insert(0,'pass')
+		password_input.insert(0,'Password')
 
 password_input = Entry(root, show = "*", width = 35, font=("Helvetica", 12))
-# password_input.pack(padx = 10, pady = 10)
-#password_input.insert(0, "Password123")
+password_input.insert(0, "Password123")
 password_input.insert(0, "pass")
 password_input.bind('<FocusIn>', pass_in)
 password_input.bind('<FocusOut>', pass_out)
@@ -112,7 +107,7 @@ def sign_in():
 	clicked = StringVar()
 	clicked.set(modes[0])
 
-
+	#open and read database file
 	file = open('DCM/database.txt', 'r')
 	r = ast.literal_eval(file.read())
 	file.close()
@@ -129,12 +124,14 @@ def sign_in():
 		drop = OptionMenu(screen, clicked, *modes)
 		drop.pack()
 
+		#frame for parameters
 		frame = Frame(screen)
 		frame.pack()
 
 		parameter_frame = LabelFrame(frame, text = "Parameters", font = ("Helvetica", 20))
 		parameter_frame.grid(row = 0, column = 0, padx = 20, pady = 20)
 
+		#Parameter labels
 		LRL_label = Label(parameter_frame, text = "Lower Rate Limit (ppm)", font = ("Helvetica", 15))
 		URL_label = Label(parameter_frame, text = "Upper Rate Limit (ppm)", font = ("Helvetica", 15))
 		APAR_label = Label(parameter_frame, text = "Atrial Pulse Amplitude Regulated (V)", font = ("Helvetica", 15))
@@ -144,6 +141,7 @@ def sign_in():
 		VRP_label = Label(parameter_frame, text = "Ventricular Refractory Period (ms)", font = ("Helvetica", 15))
 		ARP_label = Label(parameter_frame, text = "Atrial Refractory Period (ms)", font = ("Helvetica", 15))
 
+		#Parameter spinboxes
 		LRL_spinbox = Spinbox(parameter_frame, values = LRL, font = ("Helvetica", 15))
 		URL_spinbox = Spinbox(parameter_frame, from_ = 50, to = 175, increment = 5, font = ("Helvetica", 15))
 		APAR_spinbox = Spinbox(parameter_frame, values = AV_PAR, font = ("Helvetica", 15))
@@ -153,6 +151,7 @@ def sign_in():
 		VRP_spinbox = Spinbox(parameter_frame, from_ = 150, to = 500, increment = 10, font = ("Helvetica", 15))
 		ARP_spinbox = Spinbox(parameter_frame, from_ = 150, to = 500, increment = 10, font = ("Helvetica", 15))
 
+		#print output of selected parameters
 		def output_params():
 			mode = clicked.get()
 			LRL = LRL_spinbox.get()
@@ -178,9 +177,10 @@ def sign_in():
 			#Printing selected parameters 
 			print(output_dict)
 		
+		#Select button
 		myButton3 = Button(screen, text="Select", padx = 30, pady = 5, bg="red", command = output_params)
 
-
+		#position parameter labels
 		LRL_label.grid(row = 0, column = 0)
 		URL_label.grid(row = 0, column = 1)	
 		APAR_label.grid(row = 2, column = 0)
@@ -190,6 +190,7 @@ def sign_in():
 		VRP_label.grid(row = 6, column = 1)
 		ARP_label.grid(row = 6, column = 0)
 
+		#position parameter spinboxes
 		LRL_spinbox.grid(row = 1, column = 0)
 		URL_spinbox.grid(row = 1, column = 1)		
 		APAR_spinbox.grid(row = 3, column = 0)
@@ -250,7 +251,7 @@ def sign_up_account():
 				#store username/password in hashmap
 
 				if len(r) < 11:
-
+					#test case if username already exists
 					if username_input in pre_r:
 						flag = 1
 						messagebox.showerror('Error', "Unfortunately your account was not created. The provided username already exists.")
@@ -274,6 +275,7 @@ def sign_up_account():
 		else:
 			messagebox.showerror('Error', "Make sure both passwords match.")
 
+		#rewrite textfile if empty
 		if (flag == 1):
 			file = open('DCM/database.txt', 'w')
 			file.write(str(pre_r))
@@ -338,6 +340,7 @@ def sign_up_account():
 		if password_confirm.get() == '':
 			password_confirm.insert(0, 'Confirm Password*')
 
+	#setting up interface of password confirm
 	password_confirm = Entry(frame, width = 25, fg = 'black', border = 0, bg = 'white', font=('Helvetica 11 bold'))
 	password_confirm.place(x = 30, y = 220)
 	password_confirm.insert(0, 'Confirm Password*')
@@ -345,13 +348,17 @@ def sign_up_account():
 	password_confirm.bind("<FocusOut>", pass_out)
 	Frame(frame, width = 295, height = 2, bg = 'black').place(x = 25, y = 247)
 
-
+	#Sign up/login buttons in registration
 	myButton1 = Button(frame, width = 39, pady = 7, text = 'Sign up', bg = 'pink', fg = 'black', border = 0, font = 'Helvetica 9 bold', command = sign_up).place(x = 35, y = 260)
 	myButton2 = Button(frame, width = 6, text = 'Login', border = 0, bg = 'orange', cursor = 'hand2', fg = 'black', font=('Helvetica 9 bold'), command = sign_in).place(x = 300, y = 0)
 
 	window.mainloop()
 
 ##############################################################################################
+
+
+
+#"sign in" and "create account" button in welcome screen
 myButton1 = Button(root, text="Sign In", padx = 30, pady = 5, bg="red", command = sign_in)
 myButton2 = Button(root, text="Create Account", padx = 30, pady = 5, bg="orange", command = sign_up_account)
 
@@ -367,6 +374,7 @@ heart_label = Label(image = heart_img)
 sign_in_canvas = Canvas(root, width = 200, height = 60, bg = "black")
 sign_in_canvas.create_text(100, 30, text = "Welcome!", fill = "white", font=('Helvetica 15 bold'))
 
+#green bar
 line_canvas = Canvas(root, width = 325, height = 5, bg = "black")
 line_canvas.create_line(0, 5, 325, 5, fill="green", width=5)
 
