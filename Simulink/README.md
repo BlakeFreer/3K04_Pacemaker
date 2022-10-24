@@ -1,4 +1,8 @@
 # Simulink
+Created by
+- Blake Freer
+- Liam Luimes
+- Aldraech Liac 
 
 ## Troubleshooting
 ### Buses Not Found
@@ -7,6 +11,11 @@ Go to the Pacemaker.slx model, then `MODELLING -> DESIGN -> BUS EDITOR -> Import
 Ensure that all subfolders withing 3K04_Pacemaker/Simulink are included in the Matlab path.
 
 Within Matlab, go to `Environment -> Set Path` and add all paths
+
+---
+
+## Requirements Table
+See `Simulink/RequirementsTable.slx`
 
 ---
 
