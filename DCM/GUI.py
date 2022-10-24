@@ -4,8 +4,7 @@ from tkinter import messagebox
 from tkinter import ttk
 import ast
 
-
-#Set interface of window
+# Set interface of welcome window
 root = Tk()
 root.title(string="DCM")
 root_img = PhotoImage(file = "DCM/images/MacFireball.png")
@@ -149,7 +148,6 @@ def sign_in():
 		URL_spinbox = Spinbox(parameter_frame, from_ = 50, to = 175, increment = 5, font = ("Helvetica", 15))
 		APAR_spinbox = Spinbox(parameter_frame, values = AV_PAR, font = ("Helvetica", 15))
 		APW_spinbox = Spinbox(parameter_frame, values = AV_PW, increment = 0.1, font = ("Helvetica", 15))
-		# format = "%2f" for floats
 		VPAR_spinbox = Spinbox(parameter_frame, values = AV_PAR, font = ("Helvetica", 15))
 		VPW_spinbox = Spinbox(parameter_frame, values = AV_PW, font = ("Helvetica", 15))
 		VRP_spinbox = Spinbox(parameter_frame, from_ = 150, to = 500, increment = 10, font = ("Helvetica", 15))
@@ -226,6 +224,8 @@ def sign_up_account():
 
 	#Store username/passwords in a text file
 	def sign_up():
+		flag = 0
+
 		username_input = username.get()
 		password_input = password.get()
 		password2_input = password_confirm.get()
@@ -237,6 +237,10 @@ def sign_up_account():
 				file = open('DCM/database.txt', 'r+')
 				r = ast.literal_eval(file.read())
 
+				file1 = open('DCM/database.txt', 'r+')
+				pre_r = ast.literal_eval(file1.read())
+				file1.close()
+
 				dictionary = {username_input:password_input}
 
 				r.update(dictionary)
@@ -244,17 +248,21 @@ def sign_up_account():
 				file.close()
 
 				#store username/password in hashmap
-				if len(dictionary) < 3:
 
-					file = open('DCM/database.txt', 'w')
-					w = file.write(str(r))
+				if len(r) < 11:
 
-					messagebox.showinfo('Registration', 'Congratulations! You have successfully signed up.')
-					window.destroy()
+					if username_input in pre_r:
+						flag = 1
+						messagebox.showerror('Error', "Unfortunately your account was not created. The provided username already exists.")
 
+					else:
+						file = open('DCM/database.txt', 'w')
+						w = file.write(str(r))
+
+						messagebox.showinfo('Registration', 'Congratulations! You have successfully signed up.')
+						window.destroy()
 				else:
 					messagebox.showerror('Error', "Unfortunately your account was not created. There are a maximum of 10 members only.")
-
 
 			#Create database.txt file
 			except:
@@ -265,6 +273,11 @@ def sign_up_account():
 
 		else:
 			messagebox.showerror('Error', "Make sure both passwords match.")
+
+		if (flag == 1):
+			file = open('DCM/database.txt', 'w')
+			file.write(str(pre_r))
+			file.close()
 
 
 	#relocate to sign in 
