@@ -73,6 +73,12 @@ Format:\
 | VVI | 8 | VVIR |
 | AAT | 9 | AAT |
 | VVT | 10 | VVT |
+
+### Example
+`VVI` is stored as `(MODE=8` and `RATE_MOD=FALSE)`
+
+`VVIR` is stored as `(MODE=8` and `RATE_MOD=TRUE)`
+
 ### **ACT_THRESH**
 | Name | Value |
 |:-----|:-----:|
