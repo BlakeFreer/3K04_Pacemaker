@@ -3,6 +3,7 @@ from PIL import ImageTk,Image
 from tkinter import messagebox
 from tkinter import ttk
 import ast
+import json
 
 # Set interface of welcome window
 root = Tk()
@@ -102,6 +103,23 @@ def sign_in():
 		      1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 
 		      1.8, 1.9)
 
+	AV_delay_offset = ("Off", -10, -20, -30, -40,
+						-50, -60, -70, -80, -90, 
+						-100)
+
+	AVS = (0.25, 0.5, 0.75, 1, 1.5, 2, 2.5,
+		3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 
+		7.5, 8, 8.5, 9, 9.5, 10)
+
+	PVARP_ext = ("Off", 50, 100, 150, 200, 250,
+				300, 350, 400, 450, 500)
+
+	RS = ("Off",3, 6, 9, 12, 15, 18, 21, 25)
+
+	ATRD = (10, 20, 40, 60, 80, 100, 200, 300,
+			400, 500, 600, 700, 800, 900, 1000,
+			1100, 1200, 1300, 1400, 1500, 1600, 
+			1700, 1800, 1900, 2000)
 
 	#drop down menu for modes
 	clicked = StringVar()
@@ -141,6 +159,26 @@ def sign_in():
 		VRP_label = Label(parameter_frame, text = "Ventricular Refractory Period (ms)", font = ("Helvetica", 15))
 		ARP_label = Label(parameter_frame, text = "Atrial Refractory Period (ms)", font = ("Helvetica", 15))
 
+		MSR_label = Label(parameter_frame, text = "Maximum Sensor Rate (ppm)", font = ("Helvetica", 15))
+		FAD_label = Label(parameter_frame, text = "Fixed AV Delay (ms)", font = ("Helvetica", 15))
+		DAD_label = Label(parameter_frame, text = "Dynamic AV Delay (ms)", font = ("Helvetica", 15))
+		MDAD_label = Label(parameter_frame, text = "Minimum Dynamic AV Delay (ms)", font = ("Helvetica", 15))
+		SADO_label = Label(parameter_frame, text = "Sensed AV Delay Offset (ms)", font = ("Helvetica", 15))
+		APAU_label = Label(parameter_frame, text = "Atrial Pulse Amplitude Unregulated (V)", font = ("Helvetica", 15))
+		AVS_label = Label(parameter_frame, text = "A or V Sensitivity (mV)", font = ("Helvetica", 15))
+		PVARP_label = Label(parameter_frame, text = "Post Ventricular Atrial Refractory Period (ms)", font = ("Helvetica", 15))
+		PVARPE_label = Label(parameter_frame, text = "Post Ventricular Atrial Refractory Period Extension (ms)", font = ("Helvetica", 15))
+		RS_label = Label(parameter_frame, text = "Rate Smoothing (%)", font = ("Helvetica", 15))
+		ATR_label = Label(parameter_frame, text = "Atrial Tachycardia Response", font = ("Helvetica", 15))
+		ATRD_label = Label(parameter_frame, text = "ATR Duration (cc)", font = ("Helvetica", 15))
+		ATRFT_label = Label(parameter_frame, text = "ATR Fallback Mode (min)", font = ("Helvetica", 15))
+		VB_label = Label(parameter_frame, text = "Ventricular Blanking (ms)", font = ("Helvetica", 15))
+		AT_label = Label(parameter_frame, text = "Activity Threshold", font = ("Helvetica", 15))
+		RT_label = Label(parameter_frame, text = "Reaction Time (s)", font = ("Helvetica", 15))
+		RF_label = Label(parameter_frame, text = "Response Factor", font = ("Helvetica", 15))
+		RecT_label = Label(parameter_frame, text = "Recovery Time (min)", font = ("Helvetica", 15))
+
+
 		#Parameter spinboxes
 		LRL_spinbox = Spinbox(parameter_frame, values = LRL, font = ("Helvetica", 15))
 		URL_spinbox = Spinbox(parameter_frame, from_ = 50, to = 175, increment = 5, font = ("Helvetica", 15))
@@ -150,6 +188,26 @@ def sign_in():
 		VPW_spinbox = Spinbox(parameter_frame, values = AV_PW, font = ("Helvetica", 15))
 		VRP_spinbox = Spinbox(parameter_frame, from_ = 150, to = 500, increment = 10, font = ("Helvetica", 15))
 		ARP_spinbox = Spinbox(parameter_frame, from_ = 150, to = 500, increment = 10, font = ("Helvetica", 15))
+
+		MSR_spinbox = Spinbox(parameter_frame, from_ = 50, to = 175, increment = 5, font = ("Helvetica", 15))
+		FAD_spinbox = Spinbox(parameter_frame, from_ = 70, to = 300, increment = 5, font = ("Helvetica", 15))
+		DAD_spinbox = Spinbox(parameter_frame, values = ("Off", "On"), font = ("Helvetica", 15))
+		MDAD_spinbox = Spinbox(parameter_frame, from_ = 30, to = 100, increment = 10, font = ("Helvetica", 15))
+		SADO_spinbox = Spinbox(parameter_frame, values = AV_delay_offset, font = ("Helvetica", 15))
+		APAU_spinbox = Spinbox(parameter_frame, values = ("Off", 1.25, 2.5, 3.75, 5), font = ("Helvetica", 15))
+		AVS_spinbox = Spinbox(parameter_frame, values = AVS, font = ("Helvetica", 15))
+		PVARP_spinbox = Spinbox(parameter_frame, from_ = 150, to = 500, increment = 10, font = ("Helvetica", 15))
+		PVARPE_spinbox = Spinbox(parameter_frame, values = PVARP_ext, font = ("Helvetica", 15))
+		RS_spinbox = Spinbox(parameter_frame, values = RS, font = ("Helvetica", 15))
+		ATR_spinbox = Spinbox(parameter_frame, values = ("On", "Off"), font = ("Helvetica", 15))
+		ATRD_spinbox = Spinbox(parameter_frame, values = ATRD, font = ("Helvetica", 15))
+		ATRFT_spinbox = Spinbox(parameter_frame, from_ = 1, to = 5, increment = 1, font = ("Helvetica", 15))
+		VB_spinbox = Spinbox(parameter_frame, from_ = 30, to = 60, increment = 10, font = ("Helvetica", 15))
+		AT_spinbox = Spinbox(parameter_frame, values = ("V-Low", "Low", "Med-Low", "Med", "Med-High", "High", "V-High"), font = ("Helvetica", 15))
+		RT_spinbox = Spinbox(parameter_frame, from_ = 10, to = 50, increment = 10, font = ("Helvetica", 15))
+		RF_spinbox = Spinbox(parameter_frame, from_ = 1, to = 16, increment = 1, font = ("Helvetica", 15))
+		RecT_spinbox = Spinbox(parameter_frame, from_ = 2, to = 16, increment = 1, font = ("Helvetica", 15))
+
 
 		#print output of selected parameters
 		def output_params():
@@ -163,22 +221,64 @@ def sign_in():
 			VRP = VRP_spinbox.get()
 			ARP = ARP_spinbox.get()
 
+			MSR = MSR_spinbox.get()
+			FAD = FAD_spinbox.get()
+			DAD = DAD_spinbox.get()
+			MDAD = MDAD_spinbox.get()
+			SADO = SADO_spinbox.get()
+			APAU = APAU_spinbox.get()
+			AVS = AVS_spinbox.get()
+			PVARP = PVARP_spinbox.get()
+			PVARPE = PVARPE_spinbox.get()
+			RS = RS_spinbox.get()
+			ATR = ATR_spinbox.get()
+			ATRD = ATRD_spinbox.get()
+			ATRFT = ATRFT_spinbox.get()
+			VB = VB_spinbox.get()
+			AT = AT_spinbox.get()
+			RT = RT_spinbox.get()
+			RF = RF_spinbox.get()
+			RecT = RecT_spinbox.get()
+
 			output_dict = {
 				"Mode": mode,
 				"LRL": LRL,
 				"URL": URL,
+				"MSR": MSR,
+				"FAD": FAD,
+				"DAD": DAD,
+				"MDAD": MDAD,
+				"SADO": SADO,
 				"APAR": APAR,
+				"APAU": APAU,
 				"APW": APW,
+				"AVS": AVS,
+				"VRP": VRP,
 				"VPAR": VPAR,
 				"VPW": VPW,
-				"VRP": VRP,
-				"ARP": ARP
+				"ARP": ARP,
+				"PVARP": PVARP,
+				"PVARPE": PVARPE,
+				"RS": RS,
+				"ATR": ATR,
+				"ATRD": ATRD,
+				"ATRFT": ATRFT,
+				"VB": VB,
+				"AT": AT,
+				"RT": RT,
+				"RF": RF,
+				"RecT": RecT
 			}
-			#Printing selected parameters 
-			print(output_dict)
+			#Outputting selected parameters to text file
+			with open("DCM/output.txt", "a") as f:
+				output_str = json.dumps(output_dict)
+				f.write(output_str + "\n")
+			
+			# output_arr = {mode, }
+
 		
 		#Select button
-		myButton3 = Button(screen, text="Select", padx = 30, pady = 5, bg="red", command = output_params)
+		myButton3 = Button(screen, text="Select", padx = 30, pady = 5, bg="red", activebackground = "green", command = output_params)
 
 		#position parameter labels
 		LRL_label.grid(row = 0, column = 0)
@@ -190,6 +290,25 @@ def sign_in():
 		VRP_label.grid(row = 6, column = 1)
 		ARP_label.grid(row = 6, column = 0)
 
+		MSR_label.grid(row = 0, column = 2)
+		FAD_label.grid(row = 2, column = 2)
+		DAD_label.grid(row = 4, column = 2)
+		MDAD_label.grid(row = 6, column = 2)
+		SADO_label.grid(row = 8, column = 0)
+		APAU_label.grid(row = 8, column = 1)
+		AVS_label.grid(row = 8, column = 2)
+		PVARP_label.grid(row = 10, column = 0)
+		PVARPE_label.grid(row = 10, column = 1)
+		RS_label.grid(row = 10, column = 2)
+		ATR_label.grid(row = 12, column = 0)
+		ATRD_label.grid(row = 12, column = 1)
+		ATRFT_label.grid(row = 12, column = 2)
+		VB_label.grid(row = 0, column = 3)
+		AT_label.grid(row = 2, column = 3)
+		RT_label.grid(row = 4, column = 3)
+		RF_label.grid(row = 6, column = 3)
+		RecT_label.grid(row = 8, column = 3)
+
 		#position parameter spinboxes
 		LRL_spinbox.grid(row = 1, column = 0)
 		URL_spinbox.grid(row = 1, column = 1)		
@@ -199,6 +318,26 @@ def sign_in():
 		VPW_spinbox.grid(row = 5, column = 1)
 		VRP_spinbox.grid(row = 7, column = 1)
 		ARP_spinbox.grid(row = 7, column = 0)
+
+		MSR_spinbox.grid(row = 1, column = 2)
+		FAD_spinbox.grid(row = 3, column = 2)
+		DAD_spinbox.grid(row = 5, column = 2)
+		MDAD_spinbox.grid(row = 7, column = 2)
+		SADO_spinbox.grid(row = 9, column = 0)
+		APAU_spinbox.grid(row = 9, column = 1)
+		AVS_spinbox.grid(row = 9, column = 2)
+		PVARP_spinbox.grid(row = 11, column = 0)
+		PVARPE_spinbox.grid(row = 11, column = 1)
+		RS_spinbox.grid(row = 11, column = 2)
+		ATR_spinbox.grid(row = 13, column = 0)
+		ATRD_spinbox.grid(row = 13, column = 1)
+		ATRFT_spinbox.grid(row = 13, column = 2)
+		VB_spinbox.grid(row = 1, column = 3)
+		AT_spinbox.grid(row = 3, column = 3)
+		RT_spinbox.grid(row = 5, column = 3)
+		RF_spinbox.grid(row = 7, column = 3)
+		RecT_spinbox.grid(row = 9, column = 3)
+
 		myButton3.pack()
 
 
