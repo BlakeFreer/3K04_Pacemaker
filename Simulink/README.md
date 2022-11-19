@@ -45,6 +45,7 @@ Format:\
     - `ATR_DURATION` - Atrial Tachycardia Response Duration - `[Cardiac Cycles]`
     - `ATR_FALLBACK_MODE` - ATR Fallback Mode - `[OFF/ON]`
     - `ATR_FALLBACK_TIME` - ATR Fallback Time - `[min]`
+    - `VENTRICULAR_BLANKING` - Ventricular Blanking - `[ms]`
     - `ACTIVITY_THRESH` - Activity Threshold - `[ENUM]`
     - `REACTION_TIME` - Reaction Time - `[sec]`
     - `RESPONSE_FACTOR` - Response Factor - `[int]`
