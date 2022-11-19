@@ -50,6 +50,7 @@ Format:\
     - `RECOVERY_TIME` - Recovery Time - `[min]`
 2. `BusSPECIFIC.`
     - `AMP` - A/V Amplitude - `[V]`
+    - `AMP_UNREGULATED` - A/V Amplitude Unregulated - `[V]`
     - `PULSE_WIDTH` - A/V Pulse Width - `[ms]`
     - `SENSITIVITY` - A/V Sensitivity - `[V]`
     - `RP` - A/V Refactory Period - `[ms]`
