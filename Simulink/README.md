@@ -35,6 +35,7 @@ Format:\
     - `MAX_SENSOR_RATE` - Maximum Sensor Rate - `[BPM]`
     - `FIXED_AV_DELAY` - Fixed AV Delay - `[ms]`
     - `DYNAMIC_AV_DELAY` - Dynamic AV Delay - `[OFF/ON]`
+    - `MINIMUM_DYNAMIC_AV_DELAY` - Minimum Dynamic AV Delay - `[ms]` 
     - `SENSED_AV_DELAY_OFFSET` - Sensed AV Delay Offset - `[ms]`
     - `PVARP` - Post Ventricular Atrial Refractory Period - `[ms]`
     - `PVARP_EXT` - PVARP Extension - `[ms]`
