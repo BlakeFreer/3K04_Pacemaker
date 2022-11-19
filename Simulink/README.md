@@ -41,7 +41,7 @@ Format:\
     - `PVARP_EXT` - PVARP Extension - `[ms]`
     - `HYSTERESIS` - Hysteresis - `[BPM]`
     - `RATE_SMOOTHING` - Rate Smoothing - `[double]`
-    - `ATR_MODE` - Atrial Tachycardia Response - `[OFF/ON]
+    - `ATR_MODE` - Atrial Tachycardia Response - `[OFF/ON]`
     - `ATR_DURATION` - Atrial Tachycardia Response Duration - `[Cardiac Cycles]`
     - `ATR_FALLBACK_MODE` - ATR Fallback Mode - `[OFF/ON]`
     - `ATR_FALLBACK_TIME` - ATR Fallback Time - `[min]`
