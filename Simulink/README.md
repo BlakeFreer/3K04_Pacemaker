@@ -50,7 +50,7 @@ Format:\
     - `REACTION_TIME` - Reaction Time - `[sec]`
     - `RESPONSE_FACTOR` - Response Factor - `[int]`
     - `RECOVERY_TIME` - Recovery Time - `[min]`
-2. `BusSPECIFIC.`
+2. `BusSPECIFIC.` - Prefix each parameter with `ATR_` or `VENT_` as necessary
     - `AMP` - A/V Amplitude - `[V]`
     - `AMP_UNREGULATED` - A/V Amplitude Unregulated - `[V]`
     - `PULSE_WIDTH` - A/V Pulse Width - `[ms]`
