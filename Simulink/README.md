@@ -29,7 +29,6 @@ Format:\
 
 1. `BusGEN.`
     - `MODE` - Operating Mode - `[ENUM]`
-    - `RATE_ADAPTIVE` - Rate Adaptive - `[OFF/ON]`
     - `LRL` - Lower Rate Limit - `[BPM]`
     - `URL` - Upper Rate Limit - `[BPM]`
     - `MAX_SENSOR_RATE` - Maximum Sensor Rate - `[BPM]`
