@@ -29,7 +29,6 @@ Format:\
 
 1. `BusGEN.`
     - `MODE` - Operating Mode - `[ENUM]`
-    - `RATE_ADAPTIVE` - Rate Adaptive - `[OFF/ON]`
     - `LRL` - Lower Rate Limit - `[BPM]`
     - `URL` - Upper Rate Limit - `[BPM]`
     - `MAX_SENSOR_RATE` - Maximum Sensor Rate - `[BPM]`
@@ -50,7 +49,7 @@ Format:\
     - `REACTION_TIME` - Reaction Time - `[sec]`
     - `RESPONSE_FACTOR` - Response Factor - `[int]`
     - `RECOVERY_TIME` - Recovery Time - `[min]`
-2. `BusSPECIFIC.`
+2. `BusSPECIFIC.` - Prefix each parameter with `ATR_` or `VENT_` as necessary
     - `AMP` - A/V Amplitude - `[V]`
     - `AMP_UNREGULATED` - A/V Amplitude Unregulated - `[V]`
     - `PULSE_WIDTH` - A/V Pulse Width - `[ms]`
@@ -64,19 +63,27 @@ Format:\
 ---
 ## Enumerations
 ### **MODE**
-| RATE_MOD = OFF | MODE | RATE_MOD = ON |
-|-----:|:----:|:--------|
-| OFF | 0 | OFF |
-| DDD | 1 | DDDR |
-| VDD | 2 | VDDR |
-| DDI | 3 | DDIR |
-| DOO | 4 | DOOR |
-| AOO | 5 | AOOR |
-| AAI | 6 | AAIR |
-| VOO | 7 | VOOR |
-| VVI | 8 | VVIR |
-| AAT | 9 | AAT |
-| VVT | 10 | VVT |
+| Value | Mode |
+|-----:|:----:|
+| OFF | 0 |
+| DDD | 1 |
+| VDD | 2 |
+| DDI | 3 |
+| DOO | 4 |
+| AOO | 5 |
+| AAI | 6 |
+| VOO | 7 |
+| VVI | 8 |
+| AAT | 9 |
+| VVT | 10 |
+| DDDR | 11 |
+| VDDR | 12 |
+| DDIR | 13 |
+| DOOR | 14 |
+| AOOR | 15 |
+| AAIR | 16 |
+| VOOR | 17 |
+| VVIR | 18 |
 
 ### Example
 `VVI` is stored as `(MODE=8` and `RATE_MOD=FALSE)`
@@ -93,3 +100,4 @@ Format:\
 |MEDHIGH|4|
 |HIGH|5|
 |VHIGH|6|
+>>>>>>> 825032cca182c3d9147af62f2911037ecf67f3ff
