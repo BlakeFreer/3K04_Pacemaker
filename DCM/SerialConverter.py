@@ -1,21 +1,20 @@
 # Author: Blake Freer
 # Date Created: November 24, 2022
-# Description: Converts a dictionary of pacemaker values to a byte array for serial transmission
+# Description: Converts a dictionary of pacemaker values to a 32-byte array for serial transmission
 
-from tabulate import tabulate
+# Usage: In the DCM python file, call 'import SerialConverter' and call the method 'foo = SerialCoverter.ConvertData(dictionary)' on the dictionary of data
+# This returns an integer array. Send it via serial with Serial.write(bytearray(foo))
+# Obviously replace 'foo' with a better variable name
 
-def DictConvert(dict):
+# Additionally, this file provides the default values for each parameter. Access this via SerialConverter.DefaultParams()
 
-    orig = dict.copy()
-
+def ConvertData(dict):
     # Preprocessing on dict 
     for k in dict:
         # convert all characters to uppercase and remove whitespace
         dict[k] = dict[k].upper().strip()
-        # convert "OFF" and "ON" to integers
-        dict[k] = "0" if dict[k] == "OFF" else dict[k]
-        dict[k] = "1" if dict[k] == "ON" else dict[k]
-
+     
+    # Define Enums for converting to integers
     enumMode = {
         "OFF" : "0",
         "DDD" : "1",
@@ -50,9 +49,15 @@ def DictConvert(dict):
 
     output = [0] * 32
 
-    # Convert enums to string numbers
+    # Convert Enums to integers
     dict["MODE"] = enumMode[dict["MODE"]]
     dict["ACTIVITY_THRESH"] = enumActThresh[dict["ACTIVITY_THRESH"]]
+
+    # Convert "OFF" and "ON" to integers
+    for k in dict:
+        dict[k] = "0" if dict[k] == "OFF" else dict[k]
+        dict[k] = "1" if dict[k] == "ON" else dict[k]
+
 
     # This array provides the order of the bytes in output[] and which multiplier to use to fit with 8 bits
     keyOrderMult = [
@@ -89,53 +94,47 @@ def DictConvert(dict):
         ("VENT_RP",0.1)
     ]
 
-    # Convert all dict values to 8 bit values
+    # Convert all dict values to integer values by applying the appropriate multipliers
     for i, val in enumerate(keyOrderMult):
         if val[1] == 1:
             output[i] = int(dict[val[0]])
         else:
             output[i] = int(float(dict[val[0]]) * val[1])
 
-    # Compare to original
-    b = bytearray(output)
-    table = [[keyOrderMult[i][0], orig[keyOrderMult[i][0]], output[i], "{:02X}".format(b[i])] for i in range(31)]
-    print(tabulate(table, headers=["Parameter","Original","Output","Hex"]))
     return output
 
-defaultdata = {
-    'MODE':"VVI",
-    'LRL':"60",
-    'URL':"120",
-    'MAX_SENSOR_RATE':"120",
-    'FIXED_AV_DELAY':"150",
-    'DYNAMIC_AV_DELAY':"ON",
-    'MINIMUM_DYNAMIC_AV_DELAY':"50",
-    'SENSED_AV_DELAY_OFFSET':"OFF",
-    'PVARP':"250",
-    'PVARP_EXT':"OFF",
-    'HYSTERESIS':"OFF",
-    'RATE_SMOOTHING':"OFF",
-    'ATR_MODE':"OFF",
-    'ATR_DURATION':"20",
-    'ATR_FALLBACK_MODE':"OFF",
-    'ATR_FALLBACK_TIME':"1",
-    'VENTRICULAR_BLANKING':"40",
-    'ACTIVITY_THRESH':"MED",
-    'REACTION_TIME':"30",
-    'RESPONSE_FACTOR':"8",
-    'RECOVERY_TIME':"5",
-    'ATR_AMP':"3.5",
-    'ATR_AMP_UNREGULATED':"3.75",
-    'ATR_PULSE_WIDTH':"0.4",
-    'ATR_SENSITIVITY':"0.75",
-    'ATR_RP':"250",
-    'VENT_AMP':"3.5",
-    'VENT_AMP_UNREGULATED':"3.75",
-    'VENT_PULSE_WIDTH':"0.4",
-    'VENT_SENSITIVITY':"2.5",
-    'VENT_RP':"320",
-}
-
-output = DictConvert(defaultdata)
-
-print(''.join(['\\x{:02X}'.format(i) for i in output]))
+def DefaultParams():
+    # Default parameter values as specific in the PACEMAKER document
+    return {
+        'MODE':"DDD",
+        'LRL':"60",
+        'URL':"120",
+        'MAX_SENSOR_RATE':"120",
+        'FIXED_AV_DELAY':"150",
+        'DYNAMIC_AV_DELAY':"ON",
+        'MINIMUM_DYNAMIC_AV_DELAY':"50",
+        'SENSED_AV_DELAY_OFFSET':"OFF",
+        'PVARP':"250",
+        'PVARP_EXT':"OFF",
+        'HYSTERESIS':"OFF",
+        'RATE_SMOOTHING':"OFF",
+        'ATR_MODE':"OFF",
+        'ATR_DURATION':"20",
+        'ATR_FALLBACK_MODE':"OFF",
+        'ATR_FALLBACK_TIME':"1",
+        'VENTRICULAR_BLANKING':"40",
+        'ACTIVITY_THRESH':"MED",
+        'REACTION_TIME':"30",
+        'RESPONSE_FACTOR':"8",
+        'RECOVERY_TIME':"5",
+        'ATR_AMP':"3.5",
+        'ATR_AMP_UNREGULATED':"3.75",
+        'ATR_PULSE_WIDTH':"0.4",
+        'ATR_SENSITIVITY':"0.75",
+        'ATR_RP':"250",
+        'VENT_AMP':"3.5",
+        'VENT_AMP_UNREGULATED':"3.75",
+        'VENT_PULSE_WIDTH':"0.4",
+        'VENT_SENSITIVITY':"2.5",
+        'VENT_RP':"320",
+    }
