@@ -35,20 +35,24 @@ Format:\
     - `MAX_SENSOR_RATE` - Maximum Sensor Rate - `[BPM]`
     - `FIXED_AV_DELAY` - Fixed AV Delay - `[ms]`
     - `DYNAMIC_AV_DELAY` - Dynamic AV Delay - `[OFF/ON]`
+    - `MINIMUM_DYNAMIC_AV_DELAY` - Minimum Dynamic AV Delay - `[ms]` 
     - `SENSED_AV_DELAY_OFFSET` - Sensed AV Delay Offset - `[ms]`
     - `PVARP` - Post Ventricular Atrial Refractory Period - `[ms]`
     - `PVARP_EXT` - PVARP Extension - `[ms]`
     - `HYSTERESIS` - Hysteresis - `[BPM]`
     - `RATE_SMOOTHING` - Rate Smoothing - `[double]`
+    - `ATR_MODE` - Atrial Tachycardia Response - `[OFF/ON]`
     - `ATR_DURATION` - Atrial Tachycardia Response Duration - `[Cardiac Cycles]`
     - `ATR_FALLBACK_MODE` - ATR Fallback Mode - `[OFF/ON]`
     - `ATR_FALLBACK_TIME` - ATR Fallback Time - `[min]`
+    - `VENTRICULAR_BLANKING` - Ventricular Blanking - `[ms]`
     - `ACTIVITY_THRESH` - Activity Threshold - `[ENUM]`
     - `REACTION_TIME` - Reaction Time - `[sec]`
     - `RESPONSE_FACTOR` - Response Factor - `[int]`
     - `RECOVERY_TIME` - Recovery Time - `[min]`
 2. `BusSPECIFIC.`
     - `AMP` - A/V Amplitude - `[V]`
+    - `AMP_UNREGULATED` - A/V Amplitude Unregulated - `[V]`
     - `PULSE_WIDTH` - A/V Pulse Width - `[ms]`
     - `SENSITIVITY` - A/V Sensitivity - `[V]`
     - `RP` - A/V Refactory Period - `[ms]`
