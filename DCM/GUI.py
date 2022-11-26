@@ -49,11 +49,14 @@ password_input.bind('<FocusOut>', pass_out)
 
 #Sign in
 def sign_in():
-	with open("DCM/output.txt", "r") as f:
-		flag = f.read()
-
 	username = username_input.get()
 	password = password_input.get()
+
+	f = open(f"DCM/{username}_output.txt", "a")
+	f.close()
+
+	with open(f"DCM/{username}_output.txt", "r") as f:
+		flag = f.read()
 
 	#Values for modes/parameters
 	if (flag == ""):
@@ -78,10 +81,8 @@ def sign_in():
 			"DDIR",
 			"DDDR"
 		]
-	else:
-		print("HERE!")
-			
-		with open("DCM/output.txt",'r',) as file:
+	else:			
+		with open(f"DCM/{username}_output.txt",'r',) as file:
 			for line in file:
 				pass
 			last_line = line
@@ -91,7 +92,6 @@ def sign_in():
 
 			for i in range(len(data)):
 				data[i] = data[i].split(",", 1)[0]
-				print(data[i])
 
 			data[-1] = data[-1].split("}", 1)[0]
 
@@ -99,9 +99,7 @@ def sign_in():
 				data[i] = data[i].replace('"', '')
 				data[i] = data[i].replace(' ', '')
 
-			print(data)
-
-		modes = [
+		modes2 = [
 			"Off", 
 			"AAT",
 			"VVT",
@@ -123,10 +121,10 @@ def sign_in():
 			"DDDR"
 		]
 
-		for i in range(len(modes)):
-			if (modes[i] == data[0]):
-				modes[0] = data[0]
-				modes[i] = "Off"
+		for i in range(len(modes2)):
+			if (modes2[i] == data[0]):
+				modes2[0] = data[0]
+				modes2[i] = "Off"
 
 	LRL = (30, 35, 40, 45, 50, 
 		   51, 52, 53, 54, 55, 
@@ -1036,7 +1034,7 @@ def sign_in():
 				}
 
 				#Outputting selected parameters to text file
-				with open("DCM/output.txt", "a") as f:
+				with open(f"DCM/{username}_output.txt", "a") as f:
 					output_str = json.dumps(output_dict)
 					f.write(output_str + "\n")
 				
