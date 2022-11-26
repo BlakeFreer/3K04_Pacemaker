@@ -8,7 +8,10 @@
 
 # Additionally, this file provides the default values for each parameter. Access this via SerialConverter.DefaultParams()
 
-def ConvertData(dict):
+def ConvertData(data):
+
+    dict = data.copy()    
+
     # Preprocessing on dict 
     for k in dict:
         # convert all characters to uppercase and remove whitespace
