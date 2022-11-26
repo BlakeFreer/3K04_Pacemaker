@@ -48,31 +48,84 @@ password_input.bind('<FocusOut>', pass_out)
 
 #Sign in
 def sign_in():
+	with open("DCM/output.txt", "r") as f:
+		flag = f.read()
+
 	username = username_input.get()
 	password = password_input.get()
 
 	#Values for modes/parameters
-	modes = [
-		"Off", 
-		"AAT",
-		"VVT",
-		"AOO",
-		"AAI",
-		"VOO",
-		"VVI",
-		"VDD",
-		"DOO",
-		"DDI",
-		"DDD",
-		"AOOR",
-		"AAIR",
-		"VOOR",
-		"VVIR",
-		"VDDR",
-		"DOOR",
-		"DDIR",
-		"DDDR"
-	]
+	if (flag == ""):
+		modes = [
+			"Off", 
+			"AAT",
+			"VVT",
+			"AOO",
+			"AAI",
+			"VOO",
+			"VVI",
+			"VDD",
+			"DOO",
+			"DDI",
+			"DDD",
+			"AOOR",
+			"AAIR",
+			"VOOR",
+			"VVIR",
+			"VDDR",
+			"DOOR",
+			"DDIR",
+			"DDDR"
+		]
+	else:
+		print("HERE!")
+			
+		with open("DCM/output.txt",'r',) as file:
+			for line in file:
+				pass
+			last_line = line
+			data = line.split(":")
+
+			del data[0]
+
+			for i in range(len(data)):
+				data[i] = data[i].split(",", 1)[0]
+				print(data[i])
+
+			data[-1] = data[-1].split("}", 1)[0]
+
+			for i in range(len(data)):
+				data[i] = data[i].replace('"', '')
+				data[i] = data[i].replace(' ', '')
+
+			print(data)
+
+		modes = [
+			"Off", 
+			"AAT",
+			"VVT",
+			"AOO",
+			"AAI",
+			"VOO",
+			"VVI",
+			"VDD",
+			"DOO",
+			"DDI",
+			"DDD",
+			"AOOR",
+			"AAIR",
+			"VOOR",
+			"VVIR",
+			"VDDR",
+			"DOOR",
+			"DDIR",
+			"DDDR"
+		]
+
+		for i in range(len(modes)):
+			if (modes[i] == data[0]):
+				modes[0] = data[0]
+				modes[i] = "Off"
 
 	LRL = (30, 35, 40, 45, 50, 
 		   51, 52, 53, 54, 55, 
@@ -742,33 +795,144 @@ def sign_in():
 		RecT_label = Label(parameter_frame, text = "Recovery Time (min)", font = ("Helvetica", 15))
 
 		#Parameter spinboxes
-		LRL_spinbox = Spinbox(parameter_frame, values = LRL, font = ("Helvetica", 15))
-		URL_spinbox = Spinbox(parameter_frame, from_ = 50, to = 175, increment = 5, font = ("Helvetica", 15))
-		MSR_spinbox = Spinbox(parameter_frame, from_ = 50, to = 175, increment = 5, font = ("Helvetica", 15))
-		FAD_spinbox = Spinbox(parameter_frame, from_ = 70, to = 300, increment = 5, font = ("Helvetica", 15))
-		DAD_spinbox = Spinbox(parameter_frame, values = ("Off", "On"), font = ("Helvetica", 15))
-		MDAD_spinbox = Spinbox(parameter_frame, from_ = 30, to = 100, increment = 10, font = ("Helvetica", 15))
-		SADO_spinbox = Spinbox(parameter_frame, values = AV_delay_offset, font = ("Helvetica", 15))
-		APAR_spinbox = Spinbox(parameter_frame, values = AV_PAR, font = ("Helvetica", 15))
-		APAU_spinbox = Spinbox(parameter_frame, values = ("Off", 1.25, 2.5, 3.75, 5), font = ("Helvetica", 15))
-		VPAR_spinbox = Spinbox(parameter_frame, values = AV_PAR, font = ("Helvetica", 15))
-		VPAU_spinbox = Spinbox(parameter_frame, values = ("Off", 1.25, 2.5, 3.75, 5), font = ("Helvetica", 15))
-		APW_spinbox = Spinbox(parameter_frame, values = AV_PW, increment = 0.1, font = ("Helvetica", 15))
-		VPW_spinbox = Spinbox(parameter_frame, values = AV_PW, font = ("Helvetica", 15))
-		AS_spinbox = Spinbox(parameter_frame, values = AVS, font = ("Helvetica", 15))
-		VS_spinbox = Spinbox(parameter_frame, values = AVS, font = ("Helvetica", 15))
-		VRP_spinbox = Spinbox(parameter_frame, from_ = 150, to = 500, increment = 10, font = ("Helvetica", 15))
-		ARP_spinbox = Spinbox(parameter_frame, from_ = 150, to = 500, increment = 10, font = ("Helvetica", 15))
-		PVARP_spinbox = Spinbox(parameter_frame, from_ = 150, to = 500, increment = 10, font = ("Helvetica", 15))
-		PVARPE_spinbox = Spinbox(parameter_frame, values = PVARP_ext, font = ("Helvetica", 15))
-		ATRFM_spinbox = Spinbox(parameter_frame, values = ("On", "Off"), font = ("Helvetica", 15))
-		ATRD_spinbox = Spinbox(parameter_frame, values = ATRD, font = ("Helvetica", 15))
-		ATRFT_spinbox = Spinbox(parameter_frame, from_ = 1, to = 5, increment = 1, font = ("Helvetica", 15))
-		VB_spinbox = Spinbox(parameter_frame, from_ = 30, to = 60, increment = 10, font = ("Helvetica", 15))
-		AT_spinbox = Spinbox(parameter_frame, values = ("V-Low", "Low", "Med-Low", "Med", "Med-High", "High", "V-High"), font = ("Helvetica", 15))
-		RT_spinbox = Spinbox(parameter_frame, from_ = 10, to = 50, increment = 10, font = ("Helvetica", 15))
-		RF_spinbox = Spinbox(parameter_frame, from_ = 1, to = 16, increment = 1, font = ("Helvetica", 15))
-		RecT_spinbox = Spinbox(parameter_frame, from_ = 2, to = 16, increment = 1, font = ("Helvetica", 15))
+
+		if (flag == ""):
+			LRL_spinbox = Spinbox(parameter_frame, values = LRL, font = ("Helvetica", 15))
+			URL_spinbox = Spinbox(parameter_frame, from_ = 50, to = 175, increment = 5, font = ("Helvetica", 15))
+			MSR_spinbox = Spinbox(parameter_frame, from_ = 50, to = 175, increment = 5, font = ("Helvetica", 15))
+			FAD_spinbox = Spinbox(parameter_frame, from_ = 70, to = 300, increment = 5, font = ("Helvetica", 15))
+			DAD_spinbox = Spinbox(parameter_frame, values = ("Off", "On"), font = ("Helvetica", 15))
+			MDAD_spinbox = Spinbox(parameter_frame, from_ = 30, to = 100, increment = 10, font = ("Helvetica", 15))
+			SADO_spinbox = Spinbox(parameter_frame, values = AV_delay_offset, font = ("Helvetica", 15))
+			APAR_spinbox = Spinbox(parameter_frame, values = AV_PAR, font = ("Helvetica", 15))
+			APAU_spinbox = Spinbox(parameter_frame, values = ("Off", 1.25, 2.5, 3.75, 5), font = ("Helvetica", 15))
+			VPAR_spinbox = Spinbox(parameter_frame, values = AV_PAR, font = ("Helvetica", 15))
+			VPAU_spinbox = Spinbox(parameter_frame, values = ("Off", 1.25, 2.5, 3.75, 5), font = ("Helvetica", 15))
+			APW_spinbox = Spinbox(parameter_frame, values = AV_PW, increment = 0.1, font = ("Helvetica", 15))
+			VPW_spinbox = Spinbox(parameter_frame, values = AV_PW, font = ("Helvetica", 15))
+			AS_spinbox = Spinbox(parameter_frame, values = AVS, font = ("Helvetica", 15))
+			VS_spinbox = Spinbox(parameter_frame, values = AVS, font = ("Helvetica", 15))
+			VRP_spinbox = Spinbox(parameter_frame, from_ = 150, to = 500, increment = 10, font = ("Helvetica", 15))
+			ARP_spinbox = Spinbox(parameter_frame, from_ = 150, to = 500, increment = 10, font = ("Helvetica", 15))
+			PVARP_spinbox = Spinbox(parameter_frame, from_ = 150, to = 500, increment = 10, font = ("Helvetica", 15))
+			PVARPE_spinbox = Spinbox(parameter_frame, values = PVARP_ext, font = ("Helvetica", 15))
+			ATRFM_spinbox = Spinbox(parameter_frame, values = ("On", "Off"), font = ("Helvetica", 15))
+			ATRD_spinbox = Spinbox(parameter_frame, values = ATRD, font = ("Helvetica", 15))
+			ATRFT_spinbox = Spinbox(parameter_frame, from_ = 1, to = 5, increment = 1, font = ("Helvetica", 15))
+			VB_spinbox = Spinbox(parameter_frame, from_ = 30, to = 60, increment = 10, font = ("Helvetica", 15))
+			AT_spinbox = Spinbox(parameter_frame, values = ("V-Low", "Low", "Med-Low", "Med", "Med-High", "High", "V-High"), font = ("Helvetica", 15))
+			RT_spinbox = Spinbox(parameter_frame, from_ = 10, to = 50, increment = 10, font = ("Helvetica", 15))
+			RF_spinbox = Spinbox(parameter_frame, from_ = 1, to = 16, increment = 1, font = ("Helvetica", 15))
+			RecT_spinbox = Spinbox(parameter_frame, from_ = 2, to = 16, increment = 1, font = ("Helvetica", 15))
+
+		else:
+			LRL_spinbox = Spinbox(parameter_frame, values = LRL, font = ("Helvetica", 15))
+			LRL_spinbox.delete(0,END)
+			LRL_spinbox.insert(0, data[1])
+
+			URL_spinbox = Spinbox(parameter_frame, from_ = 50, to = 175, increment = 5, font = ("Helvetica", 15))
+			URL_spinbox.delete(0,END)
+			URL_spinbox.insert(0, data[2])
+
+			MSR_spinbox = Spinbox(parameter_frame, from_ = 50, to = 175, increment = 5, font = ("Helvetica", 15))
+			MSR_spinbox.delete(0,END)
+			MSR_spinbox.insert(0, data[3])
+
+			FAD_spinbox = Spinbox(parameter_frame, from_ = 70, to = 300, increment = 5, font = ("Helvetica", 15))
+			FAD_spinbox.delete(0,END)
+			FAD_spinbox.insert(0, data[4])
+
+			DAD_spinbox = Spinbox(parameter_frame, values = ("Off", "On"), font = ("Helvetica", 15))
+			DAD_spinbox.delete(0,END)
+			DAD_spinbox.insert(0, data[5])
+
+			MDAD_spinbox = Spinbox(parameter_frame, from_ = 30, to = 100, increment = 10, font = ("Helvetica", 15))
+			MDAD_spinbox.delete(0,END)
+			MDAD_spinbox.insert(0, data[6])
+
+			SADO_spinbox = Spinbox(parameter_frame, values = AV_delay_offset, font = ("Helvetica", 15))
+			SADO_spinbox.delete(0,END)
+			SADO_spinbox.insert(0, data[7])
+
+			APAR_spinbox = Spinbox(parameter_frame, values = AV_PAR, font = ("Helvetica", 15))
+			APAR_spinbox.delete(0,END)
+			APAR_spinbox.insert(0, data[8])
+
+			APAU_spinbox = Spinbox(parameter_frame, values = ("Off", 1.25, 2.5, 3.75, 5), font = ("Helvetica", 15))
+			APAU_spinbox.delete(0,END)
+			APAU_spinbox.insert(0, data[9])
+
+			VPAR_spinbox = Spinbox(parameter_frame, values = AV_PAR, font = ("Helvetica", 15))
+			VPAR_spinbox.delete(0,END)
+			VPAR_spinbox.insert(0, data[10])
+
+			VPAU_spinbox = Spinbox(parameter_frame, values = ("Off", 1.25, 2.5, 3.75, 5), font = ("Helvetica", 15))
+			VPAU_spinbox.delete(0,END)
+			VPAU_spinbox.insert(0, data[11])
+
+			APW_spinbox = Spinbox(parameter_frame, values = AV_PW, increment = 0.1, font = ("Helvetica", 15))
+			APW_spinbox.delete(0,END)
+			APW_spinbox.insert(0, data[12])
+
+			VPW_spinbox = Spinbox(parameter_frame, values = AV_PW, font = ("Helvetica", 15))
+			VPW_spinbox.delete(0,END)
+			VPW_spinbox.insert(0, data[13])
+
+			AS_spinbox = Spinbox(parameter_frame, values = AVS, font = ("Helvetica", 15))
+			AS_spinbox.delete(0,END)
+			AS_spinbox.insert(0, data[14])
+
+			VS_spinbox = Spinbox(parameter_frame, values = AVS, font = ("Helvetica", 15))
+			VS_spinbox.delete(0,END)
+			VS_spinbox.insert(0, data[15])
+
+			VRP_spinbox = Spinbox(parameter_frame, from_ = 150, to = 500, increment = 10, font = ("Helvetica", 15))
+			VRP_spinbox.delete(0,END)
+			VRP_spinbox.insert(0, data[16])
+
+			ARP_spinbox = Spinbox(parameter_frame, from_ = 150, to = 500, increment = 10, font = ("Helvetica", 15))
+			ARP_spinbox.delete(0,END)
+			ARP_spinbox.insert(0, data[17])
+
+			PVARP_spinbox = Spinbox(parameter_frame, from_ = 150, to = 500, increment = 10, font = ("Helvetica", 15))
+			PVARP_spinbox.delete(0,END)
+			PVARP_spinbox.insert(0, data[18])
+
+			PVARPE_spinbox = Spinbox(parameter_frame, values = PVARP_ext, font = ("Helvetica", 15))
+			PVARPE_spinbox.delete(0,END)
+			PVARPE_spinbox.insert(0, data[19])
+
+			ATRFM_spinbox = Spinbox(parameter_frame, values = ("On", "Off"), font = ("Helvetica", 15))
+			ATRFM_spinbox.delete(0,END)
+			ATRFM_spinbox.insert(0, data[20])
+
+			ATRD_spinbox = Spinbox(parameter_frame, values = ATRD, font = ("Helvetica", 15))
+			ATRD_spinbox.delete(0,END)
+			ATRD_spinbox.insert(0, data[21])
+
+			ATRFT_spinbox = Spinbox(parameter_frame, from_ = 1, to = 5, increment = 1, font = ("Helvetica", 15))
+			ATRFT_spinbox.delete(0,END)
+			ATRFT_spinbox.insert(0, data[22])
+
+			VB_spinbox = Spinbox(parameter_frame, from_ = 30, to = 60, increment = 10, font = ("Helvetica", 15))
+			VB_spinbox.delete(0,END)
+			VB_spinbox.insert(0, data[23])
+
+			AT_spinbox = Spinbox(parameter_frame, values = ("V-Low", "Low", "Med-Low", "Med", "Med-High", "High", "V-High"), font = ("Helvetica", 15))
+			AT_spinbox.delete(0,END)
+			AT_spinbox.insert(0, data[24])
+
+			RT_spinbox = Spinbox(parameter_frame, from_ = 10, to = 50, increment = 10, font = ("Helvetica", 15))
+			RT_spinbox.delete(0,END)
+			RT_spinbox.insert(0, data[25])
+
+			RF_spinbox = Spinbox(parameter_frame, from_ = 1, to = 16, increment = 1, font = ("Helvetica", 15))
+			RF_spinbox.delete(0,END)
+			RF_spinbox.insert(0, data[26])
+
+			RecT_spinbox = Spinbox(parameter_frame, from_ = 2, to = 16, increment = 1, font = ("Helvetica", 15))
+			RecT_spinbox.delete(0,END)
+			RecT_spinbox.insert(0, data[27])
 
 		# Turning parameters off by default until a mode is selected
 		LRL_spinbox.configure(state = "disabled")
@@ -831,46 +995,51 @@ def sign_in():
 			RF = RF_spinbox.get()
 			RecT = RecT_spinbox.get()
 
-			output_dict = {
-				"Mode": mode,
-				"LRL": LRL,
-				"URL": URL,
-				"MSR": MSR,
-				"FAD": FAD,
-				"DAD": DAD,
-				"MDAD": MDAD,
-				"SADO": SADO,
-				"APAR": APAR,
-				"APAU": APAU,
-				"VPAR": VPAR,
-				"VPAU": VPAU,
-				"APW": APW,
-				"VPW": VPW,
-				"AS": AS,
-				"VS": VS,
-				"VRP": VRP,
-				"ARP": ARP,
-				"PVARP": PVARP,
-				"PVARPE": PVARPE,
-				"ATRFM": ATRFM,
-				"ATRD": ATRD,
-				"ATRFT": ATRFT,
-				"VB": VB,
-				"AT": AT,
-				"RT": RT,
-				"RF": RF,
-				"RecT": RecT
-			}
+			# Restrictions between parameters
+			if (int(LRL) >= int(URL)):
+				messagebox.showerror("Invalid Parameters", "Lower Rate Limit must be less than upper rate limit. Please try again.")
 
-			#Outputting selected parameters to text file
-			with open("DCM/output.txt", "a") as f:
-				output_str = json.dumps(output_dict)
-				f.write(output_str + "\n")
+			elif(int(VRP) > 60000/int(URL) - 50 or int(ARP) > 60000/int(URL) - 50):
+				messagebox.showerror("Invalid Parameters", "Refractory Period must be lowered to give time for the pacemaker to detect the heart's natural freqeuncy. Please try again.")
 			
-			# Todo
+			else:
+				output_dict = {
+					"Mode": mode,
+					"LRL": LRL,
+					"URL": URL,
+					"MSR": MSR,
+					"FAD": FAD,
+					"DAD": DAD,
+					"MDAD": MDAD,
+					"SADO": SADO,
+					"APAR": APAR,
+					"APAU": APAU,
+					"VPAR": VPAR,
+					"VPAU": VPAU,
+					"APW": APW,
+					"VPW": VPW,
+					"AS": AS,
+					"VS": VS,
+					"VRP": VRP,
+					"ARP": ARP,
+					"PVARP": PVARP,
+					"PVARPE": PVARPE,
+					"ATRFM": ATRFM,
+					"ATRD": ATRD,
+					"ATRFT": ATRFT,
+					"VB": VB,
+					"AT": AT,
+					"RT": RT,
+					"RF": RF,
+					"RecT": RecT
+				}
 
-			# messagebox.showinfo("Parameters were succesfully sent!")
-
+				#Outputting selected parameters to text file
+				with open("DCM/output.txt", "a") as f:
+					output_str = json.dumps(output_dict)
+					f.write(output_str + "\n")
+				
+				messagebox.showinfo("Success", "Parameters were succesfully sent!")
 		
 		# Creating submit button wth associated command
 		myButton3 = Button(screen, text="Submit", padx = 30, pady = 5, bg="red", activebackground = "green", command = output_params)
