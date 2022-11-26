@@ -1,9 +1,4 @@
 # Simulink
-Created by
-- Blake Freer
-- Liam Luimes
-- Aldraech Liac 
-
 ## Troubleshooting
 ### Buses Not Found
 Go to the Pacemaker.slx model, then `MODELLING -> DESIGN -> BUS EDITOR -> Import -> MAT File` and select `Simulink/src/Buses.mat`
@@ -49,7 +44,7 @@ Format:\
     - `REACTION_TIME` - Reaction Time - `[sec]`
     - `RESPONSE_FACTOR` - Response Factor - `[int]`
     - `RECOVERY_TIME` - Recovery Time - `[min]`
-2. `BusSPECIFIC.` - Prefix each parameter with `ATR_` or `VENT_` as necessary
+2. `BusSPECIFIC.` - Prefix each parameter with `ATR_` or `VENT_` within DCM as necessary
     - `AMP` - A/V Amplitude - `[V]`
     - `AMP_UNREGULATED` - A/V Amplitude Unregulated - `[V]`
     - `PULSE_WIDTH` - A/V Pulse Width - `[ms]`
@@ -85,11 +80,6 @@ Format:\
 | VOOR | 17 |
 | VVIR | 18 |
 
-### Example
-`VVI` is stored as `(MODE=8` and `RATE_MOD=FALSE)`
-
-`VVIR` is stored as `(MODE=8` and `RATE_MOD=TRUE)`
-
 ### **ACT_THRESH**
 | Name | Value |
 |:-----|:-----:|
@@ -100,4 +90,6 @@ Format:\
 |MEDHIGH|4|
 |HIGH|5|
 |VHIGH|6|
->>>>>>> 825032cca182c3d9147af62f2911037ecf67f3ff
+
+## Serial
+See DCM/README Serial Section
