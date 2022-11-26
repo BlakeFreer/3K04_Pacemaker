@@ -1,1 +1,1 @@
-{'Username': 'Password', 'user': 'pass', 'user10': 'pass10'}
+{'Username': 'Password', 'user!': 'pass', 'ricky': 'chao', '@ricky': 'chao', '   ': 'pass', 'user': 'pass', 'rickychao': 'pass word', 'username': 'pass!'}

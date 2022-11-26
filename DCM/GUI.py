@@ -4,6 +4,7 @@ from tkinter import messagebox
 from tkinter import ttk
 import ast
 import json
+import sys
 
 # Set interface of welcome window
 root = Tk()
@@ -965,8 +966,15 @@ def sign_up_account():
 		password_input = password.get()
 		password2_input = password_confirm.get()
 
+		special_character = False
+
+		#Check for special characters in username
+		for character in username_input:
+			if (not character.isalnum()):
+				special_character = True
 
 		if password_input == password2_input:
+
 			#Read file and write data
 			try:
 				file = open('DCM/database.txt', 'r+')
@@ -989,7 +997,9 @@ def sign_up_account():
 					if username_input in pre_r:
 						flag = 1
 						messagebox.showerror('Error', "Unfortunately your account was not created. The provided username already exists.")
-
+					elif special_character == True:
+						flag = 1
+						messagebox.showerror('Error',"Please make sure to only include alphabetical or numerical characters.")
 					else:
 						file = open('DCM/database.txt', 'w')
 						w = file.write(str(r))
