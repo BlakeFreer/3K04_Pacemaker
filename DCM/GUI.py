@@ -198,6 +198,8 @@ def sign_in():
 		screen = Toplevel(root)
 		screen.title("Pacemaker DCM System Dashboard")
 		screen.config(bg = "white")
+		# screen.geometry ("1500x775")
+		screen.resizable(False,False)
 		screen_img = PhotoImage(file = "DCM/images/MacFireball.png")
 		screen.iconphoto(False,root_img)
 
@@ -225,6 +227,7 @@ def sign_in():
 			discon_canvas = Canvas(screen, width = 96, height = 30, bg = "#FAF9F6")
 			discon_canvas.create_text(50, 18, text = "Disconnected!", fill = "red", font=('Helvetica 10 bold'))
 			discon_canvas.place(x = 670, y = 0)
+			# discon_canvas.place(x = 697, y = 0)
 
 		def sel_mode(pos_arg):
 			# Showing relevant parameters for selected mode
@@ -788,7 +791,7 @@ def sign_in():
 		frame.pack()
 
 		parameter_frame = LabelFrame(frame, text = "Parameters", font = ("Helvetica", 20))
-		parameter_frame.grid(row = 0, column = 0, padx = 20, pady = 20)
+		parameter_frame.grid(row = 0, column = 0, columnspan = 2, padx = 20, pady = 20)
 
 		#Parameter labels
 		LRL_label = Label(parameter_frame, text = "Lower Rate Limit (ppm)", font = ("Helvetica", 15))
@@ -1069,12 +1072,19 @@ def sign_in():
 			else:
 				messagebox.showinfo("Success", "Parameters were succesfully sent!")
 				serial.write(bytearray(SerialConverter.ConvertData(dict)))
-
 					
-		
+		def graph_data():
+			pass
+
 		# Creating submit button wth associated command
-		myButton3 = Button(screen, text="Submit", padx = 30, pady = 5, bg="red", activebackground = "green", command = output_params)
+		myButton3 = Button(frame, text="Submit", padx = 30, pady = 5, bg="red", activebackground = "green", command = output_params)
+
+		# Creating Electrogram Graph with assocated command
+		myButton5 = Button(frame, text="Electrogram", padx = 30, pady = 5, bg="red", activebackground = "green", command = graph_data)
 		
+		myButton3.grid(row = 1, column = 0)
+		myButton5.grid(row = 1, column = 1)
+
 		try:
 			myButton3.bind('<Destroy>', close_serial(serie))
 		except:
@@ -1137,9 +1147,6 @@ def sign_in():
 		RT_spinbox.grid(row = 13, column = 0)
 		RF_spinbox.grid(row = 13, column = 1)
 		RecT_spinbox.grid(row = 13, column = 2)
-
-		myButton3.pack()
-
 
 		# Creating padding for spinboxes
 		for widget in parameter_frame.winfo_children():

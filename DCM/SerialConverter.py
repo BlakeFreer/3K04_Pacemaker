@@ -133,7 +133,7 @@ def DefaultParams():
         'ATR_AMP':"3.5",
         'ATR_AMP_UNREGULATED':"3.75",
         'ATR_PULSE_WIDTH':"0.4",
-        'ATR_SENSITIVITY':"0.75",
+        'ATR_SENSITIVITY':"2.5",
         'ATR_RP':"250",
         'VENT_AMP':"3.5",
         'VENT_AMP_UNREGULATED':"3.75",
