@@ -5,6 +5,10 @@ from tkinter import ttk
 import ast
 import json
 import sys
+import serial
+import serial.tools.list_ports
+import struct
+import time
 
 # Set interface of welcome window
 root = Tk()
@@ -52,11 +56,19 @@ def sign_in():
 	username = username_input.get()
 	password = password_input.get()
 
-	f = open(f"DCM/{username}_output.txt", "a")
-	f.close()
+	#open and read database file
+	file = open('DCM/database.txt', 'r')
+	r = ast.literal_eval(file.read())
+	file.close()
 
-	with open(f"DCM/{username}_output.txt", "r") as f:
-		flag = f.read()
+	if username in r.keys():
+		f = open(f"DCM/saved/{username}_output.txt", "a")
+		f.close()
+
+		with open(f"DCM/saved/{username}_output.txt", "r") as f:
+			flag = f.read()
+	else:
+		flag = ""
 
 	#Values for modes/parameters
 	if (flag == ""):
@@ -82,7 +94,7 @@ def sign_in():
 			"DDDR"
 		]
 	else:			
-		with open(f"DCM/{username}_output.txt",'r',) as file:
+		with open(f"DCM/saved/{username}_output.txt",'r',) as file:
 			for line in file:
 				pass
 			last_line = line
@@ -99,7 +111,7 @@ def sign_in():
 				data[i] = data[i].replace('"', '')
 				data[i] = data[i].replace(' ', '')
 
-		modes2 = [
+		modes = [
 			"Off", 
 			"AAT",
 			"VVT",
@@ -121,10 +133,10 @@ def sign_in():
 			"DDDR"
 		]
 
-		for i in range(len(modes2)):
-			if (modes2[i] == data[0]):
-				modes2[0] = data[0]
-				modes2[i] = "Off"
+		for i in range(len(modes)):
+			if (modes[i] == data[0]):
+				modes[0] = data[0]
+				modes[i] = "Off"
 
 	LRL = (30, 35, 40, 45, 50, 
 		   51, 52, 53, 54, 55, 
@@ -188,9 +200,22 @@ def sign_in():
 		screen_img = PhotoImage(file = "DCM/images/MacFireball.png")
 		screen.iconphoto(False,root_img)
 
-		# Dummy code for connection status
-		con_status = True
+		# Serial Connection
+		com = 'COM4'
+		speed = 115200
 
+		try:
+			# Initialize Serial connecton
+			serie = serial.Serial(port=com,baudrate=speed, timeout=10)
+			print("CONNECTED TO " + com)
+			serie.flush()
+			con_status = True
+		except:
+			# Error in creating a Serial connection
+			print("An error occured: unable to open the specified port " + com)
+			con_status = False
+
+		# Checking connection status
 		con_canvas = Canvas(screen, width = 80, height = 30, bg = "#FAF9F6")
 		con_canvas.create_text(42, 18, text = "Connected!", fill = "green", font=('Helvetica 10 bold'))
 		con_canvas.pack()
@@ -198,7 +223,7 @@ def sign_in():
 		if (con_status == False):
 			discon_canvas = Canvas(screen, width = 96, height = 30, bg = "#FAF9F6")
 			discon_canvas.create_text(50, 18, text = "Disconnected!", fill = "red", font=('Helvetica 10 bold'))
-			discon_canvas.place(x = 720, y = 0)
+			discon_canvas.place(x = 670, y = 0)
 
 		def sel_mode(pos_arg):
 			# Showing relevant parameters for selected mode
@@ -1034,14 +1059,24 @@ def sign_in():
 				}
 
 				#Outputting selected parameters to text file
-				with open(f"DCM/{username}_output.txt", "a") as f:
+				with open(f"DCM/saved/{username}_output.txt", "a") as f:
 					output_str = json.dumps(output_dict)
 					f.write(output_str + "\n")
-				
+			
+			if (con_status == False):
+				messagebox.showerror("Connection Error", "Parameters are saved, please log in again with the pacemaker connected to send data")
+			else:
 				messagebox.showinfo("Success", "Parameters were succesfully sent!")
+				print("WILL SEND DATA TO PACEMAKER")
+					
 		
 		# Creating submit button wth associated command
 		myButton3 = Button(screen, text="Submit", padx = 30, pady = 5, bg="red", activebackground = "green", command = output_params)
+		
+		try:
+			myButton3.bind('<Destroy>', close_serial(serie))
+		except:
+			pass
 
 		# Position parameter labels
 		LRL_label.grid(row = 0, column = 0)
@@ -1298,5 +1333,8 @@ password_input.grid(row = 2, column = 1, padx = 100, pady = 5)
 myButton1.grid(row = 3,column = 1, padx = 100, pady = 5)
 line_canvas.grid(row = 4,column = 1, padx = 100)
 myButton2.grid(row = 5,column = 1, padx = 100, pady = 5)
+
+def close_serial(serie):
+	serie.close()
 
 root.mainloop()
