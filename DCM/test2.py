@@ -27,7 +27,7 @@ def animate(i, xs, ys):
 
     #Aquire and parse data from serial port
     line=ser.readline()      #ascii
-    line = line.decode(str)
+
     line_as_list = line.split(b',')
     i = int(line_as_list[0])
     relProb = line_as_list[1]

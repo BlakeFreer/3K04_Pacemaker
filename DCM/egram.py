@@ -25,12 +25,12 @@ def plot_data():
 
 		#Check if data is fits in plot
 		if (len(data) < 100):
-			data = np.append(data, (line[0]))
+			data = np.append(data, float(a[0:4]))
 		else:
 			data[0:99] = data[1:100]
-			data[99] = (a[0:4]) 
+			data[99] = float(a[0:4]) 
 
-		lines.set_xdata(np.arange(0, len(data)))
+		lines.set_xdata(np.arrange(0, len(data)))
 		lines.set_ydata(data)
 
 		canvas.draw()
@@ -75,7 +75,7 @@ stop.place(x = start.winfo_x() + start.winfo_reqwidth() + 20, y = 450)
 
 
 #serial communication (UART)
-s = sr.Serial('COM3', 115200)
+s = sr.serial('COM3', 115200)
 s.reset_input_buffer()
 
 
