@@ -104,6 +104,7 @@ def ConvertData(data):
         else:
             output[i] = int(float(dict[val[0]]) * val[1])
 
+    output[31] = 255
     return output
 
 def DefaultParams():
