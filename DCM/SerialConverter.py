@@ -114,7 +114,7 @@ def DefaultParams():
         'URL':"120",
         'MAX_SENSOR_RATE':"120",
         'FIXED_AV_DELAY':"150",
-        'DYNAMIC_AV_DELAY':"ON",
+        'DYNAMIC_AV_DELAY':"OFF",
         'MINIMUM_DYNAMIC_AV_DELAY':"50",
         'SENSED_AV_DELAY_OFFSET':"OFF",
         'PVARP':"250",

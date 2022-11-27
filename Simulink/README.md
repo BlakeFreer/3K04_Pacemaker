@@ -19,42 +19,45 @@ Most parameters are stored on the General Bus. The Atrial and Ventricular Buses 
 
 These parameters and their units were obtained from the PACEMAKER document, table 6 and 7.
 
-Format:\
-`SIMULINK_VARIABLE_NAME` - Full Description - `[units]`
-
-1. `BusGEN.`
-    - `MODE` - Operating Mode - `[ENUM]`
-    - `LRL` - Lower Rate Limit - `[BPM]`
-    - `URL` - Upper Rate Limit - `[BPM]`
-    - `MAX_SENSOR_RATE` - Maximum Sensor Rate - `[BPM]`
-    - `FIXED_AV_DELAY` - Fixed AV Delay - `[ms]`
-    - `DYNAMIC_AV_DELAY` - Dynamic AV Delay - `[OFF/ON]`
-    - `MINIMUM_DYNAMIC_AV_DELAY` - Minimum Dynamic AV Delay - `[ms]` 
-    - `SENSED_AV_DELAY_OFFSET` - Sensed AV Delay Offset - `[ms]`
-    - `PVARP` - Post Ventricular Atrial Refractory Period - `[ms]`
-    - `PVARP_EXT` - PVARP Extension - `[ms]`
-    - `HYSTERESIS` - Hysteresis - `[BPM]`
-    - `RATE_SMOOTHING` - Rate Smoothing - `[double]`
-    - `ATR_MODE` - Atrial Tachycardia Response - `[OFF/ON]`
-    - `ATR_DURATION` - Atrial Tachycardia Response Duration - `[Cardiac Cycles]`
-    - `ATR_FALLBACK_MODE` - ATR Fallback Mode - `[OFF/ON]`
-    - `ATR_FALLBACK_TIME` - ATR Fallback Time - `[min]`
-    - `VENTRICULAR_BLANKING` - Ventricular Blanking - `[ms]`
-    - `ACTIVITY_THRESH` - Activity Threshold - `[ENUM]`
-    - `REACTION_TIME` - Reaction Time - `[sec]`
-    - `RESPONSE_FACTOR` - Response Factor - `[int]`
-    - `RECOVERY_TIME` - Recovery Time - `[min]`
-2. `BusSPECIFIC.` - Prefix each parameter with `ATR_` or `VENT_` within DCM as necessary
-    - `AMP` - A/V Amplitude - `[V]`
-    - `AMP_UNREGULATED` - A/V Amplitude Unregulated - `[V]`
-    - `PULSE_WIDTH` - A/V Pulse Width - `[ms]`
-    - `SENSITIVITY` - A/V Sensitivity - `[V]`
-    - `RP` - A/V Refactory Period - `[ms]`
-3. `BusMEASURED`
-    - `R_WAVE` - R Wave Measurements - `[mV]`
-    - `P_WAVE` - P Wave Measurements - `[mV]`
-    - `LEAD_IMPEDANCE` - Lead Impedance - `[Ohm]`
-    - `BATTERY_VOLTAGE` - Battery Voltage - `[V]`
+### BusGEN
+| Parameter | Full Name | Units | Datatype |
+|:-|:-|:-|:-|
+| LRL | Lower Rate Limit | BPM | double |
+| URL | Upper Rate Limit | BPM | double |
+| MAX_SENSOR_RATE | Maximum Sensor Rate | BPM | double |
+| FIXED_AV_DELAY | Fixed AV Delay | ms | double |
+| DYNAMIC_AV_DELAY | Dynamic AV Delay | OFF/ON | boolean |
+| MINIMUM_DYNAMIC_AV_DELAY | Minimum Dynamic AV Delay | ms | double |
+| SENSED_AV_DELAY_OFFSET | Sensed AV Delay Offset | ms | double |
+| PVARP | Post Ventricular Atrial Refractory Period | ms | double |
+| PVARP_EXT | PVARP Extension | ms | double |
+| HYSTERESIS | Hysteresis | BPM | double |
+| RATE_SMOOTHING | Rate Smoothing | double | double |
+| ATR_MODE | Atrial Tachycardia Response | OFF/ON | boolean |
+| ATR_DURATION | Atrial Tachycardia Response Duration | Cardiac Cycles | int64 |
+| ATR_FALLBACK_MODE | ATR Fallback Mode | OFF/ON | boolean |
+| ATR_FALLBACK_TIME | ATR Fallback Time | min | double |
+| VENTRICULAR_BLANKING | Ventricular Blanking | ms | double |
+| ACTIVITY_THRESH | Activity Threshold | ENUM | Enum: ACT_THRESH |
+| REACTION_TIME | Reaction Time | sec | double |
+| RESPONSE_FACTOR | Response Factor | ul | double|
+| RECOVERY_TIME | Recovery Time | min | double |
+### BusSPECIFIC
+| Parameter | Full Name | Units | Datatype |
+|:-|:-|:-|:-|
+| AMP | A/V Amplitude | V | double |
+| AMP_UNREGULATED | A/V Amplitude Unregulated | V | double |
+| PULSE_WIDTH | A/V Pulse Width | ms | double |
+| SENSITIVITY | A/V Sensitivity | V | double |
+| RP | A/V Refactory Period | ms | double |
+### BusMEASURED
+| Parameter | Full Name | Units | Datatype |
+|:-|:-|:-|:-|
+| R_WAVE | R Wave Measurements | mV | boolean |
+| P_WAVE | P Wave Measurements | mV | boolean |
+| LEAD_IMPEDANCE | Lead Impedance | Ohm | double |
+| BATTERY_VOLTAGE | Battery Voltage | V | double |
+| HEART_RATE | Current Pacing Heart Rate | BPM | double |
 ---
 ## Enumerations
 ### **MODE**
