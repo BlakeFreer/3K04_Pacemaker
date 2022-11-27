@@ -9,6 +9,7 @@ import serial
 import serial.tools.list_ports
 import struct
 import time
+import SerialConverter
 
 # Set interface of welcome window
 root = Tk()
@@ -1067,7 +1068,8 @@ def sign_in():
 				messagebox.showerror("Connection Error", "Parameters are saved, please log in again with the pacemaker connected to send data")
 			else:
 				messagebox.showinfo("Success", "Parameters were succesfully sent!")
-				print("WILL SEND DATA TO PACEMAKER")
+				serial.write(bytearray(SerialConverter.ConvertData(dict)))
+
 					
 		
 		# Creating submit button wth associated command
