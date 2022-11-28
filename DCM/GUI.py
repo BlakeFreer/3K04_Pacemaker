@@ -209,7 +209,7 @@ def sign_in():
         screen.iconphoto(False,root_img)
 
         # Serial Connection
-        com = 'COM5'
+        com = 'COM3'
         speed = 115200
 
         try:
@@ -1156,15 +1156,7 @@ def sign_in():
                 pass
             #initialize serial port
             ser = serial.Serial()
-<<<<<<< HEAD
             ser.port = 'COM3' #Arduino serial port
-=======
-            ser.port = 'COM5' #Arduino serial port
-            ser.baudrate = 115200
-            ser.timeout = 0.5
-            ser.dtr = 0
-            ser.open()
->>>>>>> 91eeb852926deaaa3244d8b8c9caebb49693ff54
 
             try:
                 ser.baudrate = 115200
