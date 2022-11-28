@@ -79,6 +79,7 @@ def sign_in():
     #Values for modes/parameters
     if (flag == ""):
         modes = [
+			"DDD",
             "Off", 
             "AAT",
             "VVT",
@@ -89,7 +90,6 @@ def sign_in():
             "VDD",
             "DOO",
             "DDI",
-            "DDD",
             "AOOR",
             "AAIR",
             "VOOR",
@@ -209,7 +209,7 @@ def sign_in():
         screen.iconphoto(False,root_img)
 
         # Serial Connection
-        com = 'COM3'
+        com = 'COM5'
         speed = 115200
 
         try:
@@ -831,32 +831,102 @@ def sign_in():
 
         if (flag == ""):
             LRL_spinbox = Spinbox(parameter_frame, values = LRL, font = ("Helvetica", 15))
+            LRL_spinbox.delete(0,END)
+            LRL_spinbox.insert(0, "60")
+
             URL_spinbox = Spinbox(parameter_frame, from_ = 50, to = 175, increment = 5, font = ("Helvetica", 15))
+            URL_spinbox.delete(0,END)
+            URL_spinbox.insert(0, "120")
+
             MSR_spinbox = Spinbox(parameter_frame, from_ = 50, to = 175, increment = 5, font = ("Helvetica", 15))
+            MSR_spinbox.delete(0,END)
+            MSR_spinbox.insert(0, "120")
+
             FAD_spinbox = Spinbox(parameter_frame, from_ = 70, to = 300, increment = 5, font = ("Helvetica", 15))
+            FAD_spinbox.delete(0,END)
+            FAD_spinbox.insert(0, "150")
+
             DAD_spinbox = Spinbox(parameter_frame, values = ("Off", "On"), font = ("Helvetica", 15))
+
             MDAD_spinbox = Spinbox(parameter_frame, from_ = 30, to = 100, increment = 10, font = ("Helvetica", 15))
+            MDAD_spinbox.delete(0,END)
+            MDAD_spinbox.insert(0, "50")
+
             SADO_spinbox = Spinbox(parameter_frame, values = AV_delay_offset, font = ("Helvetica", 15))
+
             APAR_spinbox = Spinbox(parameter_frame, values = AV_PAR, font = ("Helvetica", 15))
+            APAR_spinbox.delete(0,END)
+            APAR_spinbox.insert(0, "3.5")
+
             APAU_spinbox = Spinbox(parameter_frame, values = ("Off", 1.25, 2.5, 3.75, 5), font = ("Helvetica", 15))
+            APAU_spinbox.delete(0,END)
+            APAU_spinbox.insert(0, "3.75")
+
             VPAR_spinbox = Spinbox(parameter_frame, values = AV_PAR, font = ("Helvetica", 15))
+            VPAR_spinbox.delete(0,END)
+            VPAR_spinbox.insert(0, "3.5")
+
             VPAU_spinbox = Spinbox(parameter_frame, values = ("Off", 1.25, 2.5, 3.75, 5), font = ("Helvetica", 15))
+            VPAU_spinbox.delete(0,END)
+            VPAU_spinbox.insert(0, "3.75")
+
             APW_spinbox = Spinbox(parameter_frame, values = AV_PW, increment = 0.1, font = ("Helvetica", 15))
+            APW_spinbox.delete(0,END)
+            APW_spinbox.insert(0, "0.4")
+
             VPW_spinbox = Spinbox(parameter_frame, values = AV_PW, font = ("Helvetica", 15))
+            VPW_spinbox.delete(0,END)
+            VPW_spinbox.insert(0, "0.4")
+
             AS_spinbox = Spinbox(parameter_frame, values = AVS, font = ("Helvetica", 15))
+            AS_spinbox.delete(0,END)
+            AS_spinbox.insert(0, "0.75")
+
             VS_spinbox = Spinbox(parameter_frame, values = AVS, font = ("Helvetica", 15))
+            VS_spinbox.delete(0,END)
+            VS_spinbox.insert(0, "2.5")
+
             VRP_spinbox = Spinbox(parameter_frame, from_ = 150, to = 500, increment = 10, font = ("Helvetica", 15))
+            VRP_spinbox.delete(0,END)
+            VRP_spinbox.insert(0, "320")
+
             ARP_spinbox = Spinbox(parameter_frame, from_ = 150, to = 500, increment = 10, font = ("Helvetica", 15))
+            ARP_spinbox.delete(0,END)
+            ARP_spinbox.insert(0, "250")
+
             PVARP_spinbox = Spinbox(parameter_frame, from_ = 150, to = 500, increment = 10, font = ("Helvetica", 15))
+            PVARP_spinbox.delete(0,END)
+            PVARP_spinbox.insert(0, "250")
+
             PVARPE_spinbox = Spinbox(parameter_frame, values = PVARP_ext, font = ("Helvetica", 15))
-            ATRFM_spinbox = Spinbox(parameter_frame, values = ("On", "Off"), font = ("Helvetica", 15))
+
+            ATRFM_spinbox = Spinbox(parameter_frame, values = ("Off", "On"), font = ("Helvetica", 15))
+
             ATRD_spinbox = Spinbox(parameter_frame, values = ATRD, font = ("Helvetica", 15))
+            ATRD_spinbox.delete(0,END)
+            ATRD_spinbox.insert(0, "20")
+
             ATRFT_spinbox = Spinbox(parameter_frame, from_ = 1, to = 5, increment = 1, font = ("Helvetica", 15))
+
             VB_spinbox = Spinbox(parameter_frame, from_ = 30, to = 60, increment = 10, font = ("Helvetica", 15))
+            VB_spinbox.delete(0,END)
+            VB_spinbox.insert(0, "40")
+
             AT_spinbox = Spinbox(parameter_frame, values = ("V-Low", "Low", "Med-Low", "Med", "Med-High", "High", "V-High"), font = ("Helvetica", 15))
+            AT_spinbox.delete(0,END)
+            AT_spinbox.insert(0, "Med")
+
             RT_spinbox = Spinbox(parameter_frame, from_ = 10, to = 50, increment = 10, font = ("Helvetica", 15))
+            RT_spinbox.delete(0,END)
+            RT_spinbox.insert(0, "30")
+
             RF_spinbox = Spinbox(parameter_frame, from_ = 1, to = 16, increment = 1, font = ("Helvetica", 15))
+            RF_spinbox.delete(0,END)
+            RF_spinbox.insert(0, "8")
+
             RecT_spinbox = Spinbox(parameter_frame, from_ = 2, to = 16, increment = 1, font = ("Helvetica", 15))
+            RecT_spinbox.delete(0,END)
+            RecT_spinbox.insert(0, "5")
 
         else:
             LRL_spinbox = Spinbox(parameter_frame, values = LRL, font = ("Helvetica", 15))
@@ -1081,7 +1151,7 @@ def sign_in():
         def graph_data():
             #initialize serial port
             ser = serial.Serial()
-            ser.port = 'COM3' #Arduino serial port
+            ser.port = 'COM5' #Arduino serial port
             ser.baudrate = 115200
             ser.timeout = 0.5
             ser.dtr = 0
