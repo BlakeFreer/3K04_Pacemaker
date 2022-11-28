@@ -1095,7 +1095,7 @@ def sign_in():
             i = 0
             x, y1, y2 = [], [], []
 
-            for k in range(100):
+            for k in range(10000):
                 line=ser.readline()
 
                 num1 = int(line[0]) 
@@ -1109,7 +1109,10 @@ def sign_in():
                 Ventrical = ax.plot(x, y2, label = 'Ventrical', color='r')
                 ax.set_xlim(left=max(0, i-50), right=i+50)
 
+
+                plt.ioff()
                 fig.canvas.draw()
+
                 time.sleep(0.1)
                 i += 1
 
@@ -1118,11 +1121,11 @@ def sign_in():
                 plt.ylabel("Voltage(V)")
                 if k == 0:
                     plt.legend(frameon = False)
-
             plt.ioff()
             plt.draw()
             ser.close()
-            
+        
+
 
         # Creating submit button wth associated command
         myButton3 = Button(frame, text="Submit", padx = 30, pady = 5, bg="red", activebackground = "green", command = output_params)
