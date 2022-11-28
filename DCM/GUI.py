@@ -1079,52 +1079,129 @@ def sign_in():
                 serial.write(bytearray(SerialConverter.ConvertData(dict)))
                     
         def graph_data():
+            try:
+                ser.close()
+            except:
+                print("HERE")
+                pass
             #initialize serial port
             ser = serial.Serial()
             ser.port = 'COM3' #Arduino serial port
-            ser.baudrate = 115200
-            ser.timeout = 0.5
-            ser.dtr = 0
-            ser.open()
 
-            fig = plt.figure()
-            ax = fig.add_subplot(111)
-            fig.show()
-
-            cond = True
-            i = 0
-            x, y1, y2 = [], [], []
-
-            for k in range(10000):
-                line=ser.readline()
-
-                num1 = int(line[0]) 
-                num2 = int(line[1])
-
-                x.append(i)
-                y1.append(num1)
-                y2.append(num2)
-
-                Atrial = ax.plot(x, y1, label = 'Atrial', color='b')
-                Ventrical = ax.plot(x, y2, label = 'Ventrical', color='r')
-                ax.set_xlim(left=max(0, i-50), right=i+50)
+            try:
+                ser.baudrate = 115200
+                ser.timeout = 0.5
+                ser.dtr = 0
+                ser.open()
+                fig = plt.figure()
+                ax = fig.add_subplot(111)
+                fig.show()
+            except:
+                print("An error occurred: unable to open the specified port " + ser.port)
 
 
-                plt.ioff()
-                fig.canvas.draw()
 
-                time.sleep(0.1)
-                i += 1
+            if (clicked_2.get() == "Plot Atrium"):
+                i = 0
+                x, y1, y2 = [], [], []
 
-                plt.title("Electrogram")
-                plt.xlabel("Time")
-                plt.ylabel("Voltage(V)")
-                if k == 0:
-                    plt.legend(frameon = False)
-            plt.ioff()
-            plt.draw()
-            ser.close()
-        
+                try:
+                    for k in range(10000):
+
+                        line=ser.readline()
+
+                        num1 = int(line[0]) 
+                        #num2 = int(line[1])
+
+                        x.append(i)
+                        y1.append(num1)
+                        #y2.append(num2)
+
+                        Atrial = ax.plot(x, y1, label = 'Atrium', color='r')
+                        #Ventrical = ax.plot(x, y2, label = 'Ventrical', color='b')
+                        ax.set_xlim(left=max(0, i-50), right=i+50)
+
+
+                        plt.ioff()
+                        fig.canvas.draw()
+                        plt.pause(0.01)
+                        i += 1
+
+                        plt.title("Electrogram")
+                        plt.xlabel("Time")
+                        plt.ylabel("Voltage(V)")
+                        if k == 0:
+                            plt.legend(frameon = False)
+                except:
+                    ser.close()
+            if (clicked_2.get() == "Plot Ventricle"):
+                i = 0
+                x, y1, y2 = [], [], []
+
+                try:
+                    for k in range(10000):
+
+                        line=ser.readline()
+
+                        #num1 = int(line[0]) 
+                        num2 = int(line[1])
+
+                        x.append(i)
+                        #y1.append(num1)
+                        y2.append(num2)
+
+                        #Atrial = ax.plot(x, y1, label = 'Atrium', color='r')
+                        Ventrical = ax.plot(x, y2, label = 'Ventrical', color='b')
+                        ax.set_xlim(left=max(0, i-50), right=i+50)
+
+
+                        plt.ioff()
+                        fig.canvas.draw()
+                        plt.pause(0.01)
+                        i += 1
+
+                        plt.title("Electrogram")
+                        plt.xlabel("Time")
+                        plt.ylabel("Voltage(V)")
+                        if k == 0:
+                            plt.legend(frameon = False)
+                except:
+                    plt.ion()
+                    ser.close()
+            if (clicked_2.get() == "Plot Both"):
+                i = 0
+                x, y1, y2 = [], [], []
+
+                try:
+                    for k in range(10000):
+
+                        line=ser.readline()
+
+                        num1 = int(line[0]) 
+                        num2 = int(line[1])
+
+                        x.append(i)
+                        y1.append(num1)
+                        y2.append(num2)
+
+                        Atrial = ax.plot(x, y1, label = 'Atrium', color='r')
+                        Ventrical = ax.plot(x, y2, label = 'Ventrical', color='b')
+                        ax.set_xlim(left=max(0, i-50), right=i+50)
+
+
+                        plt.ioff()
+                        fig.canvas.draw()
+                        plt.pause(0.01)
+                        i += 1
+
+                        plt.title("Electrogram")
+                        plt.xlabel("Time")
+                        plt.ylabel("Voltage(V)")
+                        if k == 0:
+                            plt.legend(frameon = False)
+                except:
+                    plt.ion()
+                    ser.close()
 
 
         # Creating submit button wth associated command
@@ -1133,8 +1210,19 @@ def sign_in():
         # Creating Electrogram Graph with assocated command
         myButton5 = Button(frame, text="Electrogram", padx = 30, pady = 5, bg="red", activebackground = "green", command = graph_data)
         
+        egram_modes = ["Plot Atrium", "Plot Ventricle", "Plot Both"]
+
+        clicked_2 = StringVar()
+        clicked_2.set(egram_modes[0])
+
+        egram_options = OptionMenu(frame, clicked_2, *egram_modes, command = graph_data)
+        egram_options.config(bg = "lawn green", activebackground = "lawn green")
+        egram_options["menu"].config(bg = "lawn green")
+
+        drop.pack()
         myButton3.grid(row = 1, column = 0)
-        myButton5.grid(row = 1, column = 1)
+        egram_options.grid(row = 1, column = 1)
+        myButton5.grid(row = 2, column = 1)
 
         try:
             myButton3.bind('<Destroy>', close_serial(serie))
