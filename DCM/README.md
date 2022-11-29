@@ -8,6 +8,8 @@ Navigate to the main project directory `3K04_Pacemaker` and run the following co
 
 `python DCM/GUI.py`
 
+You will have to change the COM port at the top of DCM/GUI.py before running.
+
 ## Default Login
 
 Username: `Username`
