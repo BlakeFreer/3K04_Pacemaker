@@ -15,6 +15,31 @@ import matplotlib.animation as animation
 import numpy as np
 import time
 
+# Input COM port to Pacemaker
+SERIAL_PORT = 'COM8'
+SERIAL_BAUD = 115200
+# Declare a global serial object - pass this around to use
+SERIAL = serial.Serial()
+SERIAL.port = SERIAL_PORT
+SERIAL.baudrate = SERIAL_BAUD
+SERIAL.timeout=5
+
+def TryOpenSerial(ser, failmsg=""):
+    # Open ser if not already open
+    # Return success
+    if ser.is_open:
+        return True
+    else:
+        # Initialize Serial connecton
+        try:
+            ser.open()
+            ser.flush()
+            print(f"CONNECTED TO {ser.port}")
+            return True
+        except:
+            # Error in creating a Serial connection
+            print("\n".join([f"An error occured: unable to open the specified port {ser.port}",failmsg]))
+            return False
 
 # Set interface of welcome window
 root = Tk()
@@ -59,6 +84,8 @@ password_input.bind('<FocusOut>', pass_out)
 
 #Sign in
 def sign_in():
+    global SERIAL
+
     username = username_input.get()
     password = password_input.get()
 
@@ -209,19 +236,7 @@ def sign_in():
         screen.iconphoto(False,root_img)
 
         # Serial Connection
-        com = 'COM3'
-        speed = 115200
-
-        try:
-            # Initialize Serial connecton
-            serie = serial.Serial(port=com,baudrate=speed, timeout=10)
-            print("CONNECTED TO " + com)
-            serie.flush()
-            con_status = True
-        except:
-            # Error in creating a Serial connection
-            print("An error occured: unable to open the specified port " + com)
-            con_status = False
+        con_status = TryOpenSerial(SERIAL, "Location: sign_in()")
 
         # Checking connection status
         con_canvas = Canvas(screen, width = 80, height = 30, bg = "#FAF9F6")
@@ -232,7 +247,6 @@ def sign_in():
             discon_canvas = Canvas(screen, width = 96, height = 30, bg = "#FAF9F6")
             discon_canvas.create_text(50, 18, text = "Disconnected!", fill = "red", font=('Helvetica 10 bold'))
             discon_canvas.place(x = 670, y = 0)
-            # discon_canvas.place(x = 697, y = 0)
 
         def sel_mode(pos_arg):
             # Showing relevant parameters for selected mode
@@ -880,7 +894,7 @@ def sign_in():
 
             AS_spinbox = Spinbox(parameter_frame, values = AVS, font = ("Helvetica", 15))
             AS_spinbox.delete(0,END)
-            AS_spinbox.insert(0, "0.75")
+            AS_spinbox.insert(0, "2.5")
 
             VS_spinbox = Spinbox(parameter_frame, values = AVS, font = ("Helvetica", 15))
             VS_spinbox.delete(0,END)
@@ -1069,210 +1083,150 @@ def sign_in():
 
         #print output of selected parameters
         def output_params():
-            mode = clicked.get()
-            LRL = LRL_spinbox.get()
-            URL = URL_spinbox.get()
-            MSR = MSR_spinbox.get()
-            FAD = FAD_spinbox.get()
-            DAD = DAD_spinbox.get()
-            MDAD = MDAD_spinbox.get()
-            SADO = SADO_spinbox.get()
-            APAR = APAR_spinbox.get()
-            APAU = APAU_spinbox.get()
-            VPAR = VPAR_spinbox.get()
-            VPAU = VPAU_spinbox.get()
-            APW = APW_spinbox.get()
-            VPW = VPW_spinbox.get()
-            AS = AS_spinbox.get()
-            VS = VS_spinbox.get()
-            VRP = VRP_spinbox.get()
-            ARP = ARP_spinbox.get()
-            PVARP = PVARP_spinbox.get()
-            PVARPE = PVARPE_spinbox.get()
-            ATRFM = ATRFM_spinbox.get()
-            ATRD = ATRD_spinbox.get()
-            ATRFT = ATRFT_spinbox.get()
-            VB = VB_spinbox.get()
-            AT = AT_spinbox.get()
-            RT = RT_spinbox.get()
-            RF = RF_spinbox.get()
-            RecT = RecT_spinbox.get()
-
-            # Restrictions between parameters
-            if (int(LRL) >= int(URL)):
-                messagebox.showerror("Invalid Parameters", "Lower Rate Limit must be less than upper rate limit. Please try again.")
-
-            elif(int(VRP) > 60000/int(URL) - 50 or int(ARP) > 60000/int(URL) - 50):
-                messagebox.showerror("Invalid Parameters", "Refractory Period must be lowered to give time for the pacemaker to detect the heart's natural freqeuncy. Please try again.")
-            
-            else:
-                output_dict = {
-                    "Mode": mode,
-                    "LRL": LRL,
-                    "URL": URL,
-                    "MSR": MSR,
-                    "FAD": FAD,
-                    "DAD": DAD,
-                    "MDAD": MDAD,
-                    "SADO": SADO,
-                    "APAR": APAR,
-                    "APAU": APAU,
-                    "VPAR": VPAR,
-                    "VPAU": VPAU,
-                    "APW": APW,
-                    "VPW": VPW,
-                    "AS": AS,
-                    "VS": VS,
-                    "VRP": VRP,
-                    "ARP": ARP,
-                    "PVARP": PVARP,
-                    "PVARPE": PVARPE,
-                    "ATRFM": ATRFM,
-                    "ATRD": ATRD,
-                    "ATRFT": ATRFT,
-                    "VB": VB,
-                    "AT": AT,
-                    "RT": RT,
-                    "RF": RF,
-                    "RecT": RecT
+            global SERIAL
+            params = {
+                'MODE' : clicked.get(),
+                'LRL' : LRL_spinbox.get(),
+                'URL' : URL_spinbox.get(),
+                'MAX_SENSOR_RATE' : MSR_spinbox.get(),
+                'FIXED_AV_DELAY' : FAD_spinbox.get(),
+                'DYNAMIC_AV_DELAY' : DAD_spinbox.get(),
+                'MINIMUM_DYNAMIC_AV_DELAY' : MDAD_spinbox.get(),
+                'SENSED_AV_DELAY_OFFSET' : SADO_spinbox.get(),
+                'PVARP' : PVARP_spinbox.get(),
+                'PVARP_EXT' : PVARPE_spinbox.get(),
+                'HYSTERESIS' : "OFF",
+                'RATE_SMOOTHING' : "OFF",
+                'ATR_MODE' : "OFF",
+                'ATR_DURATION' : ATRD_spinbox.get(),
+                'ATR_FALLBACK_MODE' : ATRFM_spinbox.get(),
+                'ATR_FALLBACK_TIME' : ATRFT_spinbox.get(),
+                'VENTRICULAR_BLANKING' : VB_spinbox.get(),
+                'ACTIVITY_THRESH' : AT_spinbox.get(),
+                'REACTION_TIME' :  RT_spinbox.get(),
+                'RESPONSE_FACTOR' : RF_spinbox.get(),
+                'RECOVERY_TIME' : RecT_spinbox.get(),
+                'ATR_AMP' : APAR_spinbox.get(),
+                'ATR_AMP_UNREGULATED' : APAU_spinbox.get(),
+                'ATR_PULSE_WIDTH' : APW_spinbox.get(),
+                'ATR_SENSITIVITY' : AS_spinbox.get(),
+                'ATR_RP' : ARP_spinbox.get(),
+                'VENT_AMP' : VPAR_spinbox.get(),
+                'VENT_AMP_UNREGULATED' : VPAU_spinbox.get(),
+                'VENT_PULSE_WIDTH' : VPW_spinbox.get(),
+                'VENT_SENSITIVITY' : VS_spinbox.get(),
+                'VENT_RP' : VRP_spinbox.get()
+            }
+            saveparams = {
+                    'Mode' : clicked.get(),
+                    'LRL' : LRL_spinbox.get(),
+                    'URL' : URL_spinbox.get(),
+                    'MSR' : MSR_spinbox.get(),
+                    'FAD' : FAD_spinbox.get(),
+                    'DAD' : DAD_spinbox.get(),
+                    'MDAD' : MDAD_spinbox.get(),
+                    'SADO' : SADO_spinbox.get(),
+                    'APAR' : APAR_spinbox.get(),
+                    'APAU' : APAU_spinbox.get(),
+                    'VPAR' : VPAR_spinbox.get(),
+                    'VPAU' : VPAU_spinbox.get(),
+                    'APW' : APW_spinbox.get(),
+                    'VPW' : VPW_spinbox.get(),
+                    'AS' : AS_spinbox.get(),
+                    'VS' : VS_spinbox.get(),
+                    'VRP' : VRP_spinbox.get(),
+                    'ARP' : ARP_spinbox.get(),
+                    'PVARP' : PVARP_spinbox.get(),
+                    'PVARPE' : PVARPE_spinbox.get(),
+                    'ATRFM' : ATRFM_spinbox.get(),
+                    'ATRD' : ATRD_spinbox.get(),
+                    'ATRFT' : ATRFT_spinbox.get(),
+                    'VB' : VB_spinbox.get(),
+                    'AT' : AT_spinbox.get(),
+                    'RT' : RT_spinbox.get(),
+                    'RF' : RF_spinbox.get(),
+                    'RecT' : RecT_spinbox.get(),
                 }
 
+            # Restrictions between parameters
+            if (int(params['LRL']) >= int(params['URL'])):
+                messagebox.showerror("Invalid Parameters", "Lower Rate Limit must be less than upper rate limit. Please try again.")
+
+            elif(int(params['VENT_RP']) > 60000/int(params['URL']) - 50 or int(params['ATR_RP']) > 60000/int(params['URL']) - 50):
+                messagebox.showerror("Invalid Parameters", "Refractory Period must be lowered to give time for the pacemaker to detect the heart's natural frequency. Please try again.")
+            
+            else:
                 #Outputting selected parameters to text file
                 with open(f"DCM/saved/{username}_output.txt", "a") as f:
-                    output_str = json.dumps(output_dict)
+                    output_str = json.dumps(saveparams)
                     f.write(output_str + "\n")
-            
-            if (con_status == False):
-                messagebox.showerror("Connection Error", "Parameters are saved, please log in again with the pacemaker connected to send data")
-            else:
-                messagebox.showinfo("Success", "Parameters were succesfully sent!")
-                serial.write(bytearray(SerialConverter.ConvertData(dict)))
+                TryOpenSerial(SERIAL)
+                if (SERIAL.is_open):
+                    print(f"Sending {params}")
+                    SERIAL.write(bytearray(SerialConverter.ConvertData(params)))
+                    messagebox.showinfo("Success", "Parameters were succesfully sent and saved!")
+                else:
+                    messagebox.showerror("Connection Error", "Parameters are saved, please log in again with the pacemaker connected to send data")
                     
         def graph_data():
-            try:
-                ser.close()
-            except:
-                print("HERE")
-                pass
-            #initialize serial port
-            ser = serial.Serial()
-            ser.port = 'COM3' #Arduino serial port
+            global SERIAL
 
-            try:
-                ser.baudrate = 115200
-                ser.timeout = 0.5
-                ser.dtr = 0
-                ser.open()
-                fig = plt.figure()
-                ax = fig.add_subplot(111)
-                fig.show()
-            except:
-                print("An error occurred: unable to open the specified port " + ser.port)
+            open = TryOpenSerial(SERIAL)
+            if not open:
+                return
+            SERIAL.flush()
 
+            fig = plt.figure()
+            ax = fig.add_subplot(111)
+            fig.show()
 
+            # plt.ioff()
 
-            if (clicked_2.get() == "Plot Atrium"):
-                i = 0
-                x, y1, y2 = [], [], []
+            channel = clicked_2.get()
+            showATR = channel in ["Plot Atrium", "Plot Both"]
+            showVENT = channel in ["Plot Ventricle", "Plot Both"]
 
-                try:
-                    for k in range(10000):
+            count = 0
+            pts = []
 
-                        line=ser.readline()
+            RX_Freq = 100
+            RX_Per = 1 / RX_Freq
 
-                        num1 = int(line[0]) 
-                        #num2 = int(line[1])
+            Hist_Duration = 3 # length of plot in seconds
 
-                        x.append(i)
-                        y1.append(num1)
-                        #y2.append(num2)
+            closeWindow = False
+            def cl(events, args):
+                args[0].close('all')
 
-                        Atrial = ax.plot(x, y1, label = 'Atrium', color='r')
-                        #Ventrical = ax.plot(x, y2, label = 'Ventrical', color='b')
-                        ax.set_xlim(left=max(0, i-50), right=i+50)
+            fig.canvas.mpl_connect('close_event', lambda event, args=[plt]: cl(event, args))
 
+            while(not closeWindow):
+                # Read all data from serial buffer
+                while SERIAL.in_waiting > 2:
+                    line = SERIAL.readline()
+                    newpt = [count*RX_Per, int(line[0]), int(line[1])]
+                    # Convert hex to voltage
+                    newpt[1] = (float(newpt[1]) - 55) / 200 * 3.3
+                    newpt[2] = (float(newpt[2]) - 55) / 200 * 3.3
+                    pts.append(newpt)
+                    count += 1
+                # Truncate pts
+                pts = pts[-int(Hist_Duration/RX_Per):]
 
-                        plt.ioff()
-                        fig.canvas.draw()
-                        plt.pause(0.01)
-                        i += 1
-
-                        plt.title("Electrogram")
-                        plt.xlabel("Time")
-                        plt.ylabel("Voltage(V)")
-                        if k == 0:
-                            plt.legend(frameon = False)
-                except:
-                    ser.close()
-            if (clicked_2.get() == "Plot Ventricle"):
-                i = 0
-                x, y1, y2 = [], [], []
-
-                try:
-                    for k in range(10000):
-
-                        line=ser.readline()
-
-                        #num1 = int(line[0]) 
-                        num2 = int(line[1])
-
-                        x.append(i)
-                        #y1.append(num1)
-                        y2.append(num2)
-
-                        #Atrial = ax.plot(x, y1, label = 'Atrium', color='r')
-                        Ventrical = ax.plot(x, y2, label = 'Ventrical', color='b')
-                        ax.set_xlim(left=max(0, i-50), right=i+50)
-
-
-                        plt.ioff()
-                        fig.canvas.draw()
-                        plt.pause(0.01)
-                        i += 1
-
-                        plt.title("Electrogram")
-                        plt.xlabel("Time")
-                        plt.ylabel("Voltage(V)")
-                        if k == 0:
-                            plt.legend(frameon = False)
-                except:
-                    plt.ion()
-                    ser.close()
-            if (clicked_2.get() == "Plot Both"):
-                i = 0
-                x, y1, y2 = [], [], []
-
-                try:
-                    for k in range(10000):
-
-                        line=ser.readline()
-
-                        num1 = int(line[0]) 
-                        num2 = int(line[1])
-
-                        x.append(i)
-                        y1.append(num1)
-                        y2.append(num2)
-
-                        Atrial = ax.plot(x, y1, label = 'Atrium', color='r')
-                        Ventrical = ax.plot(x, y2, label = 'Ventrical', color='b')
-                        ax.set_xlim(left=max(0, i-50), right=i+50)
-
-
-                        plt.ioff()
-                        fig.canvas.draw()
-                        plt.pause(0.01)
-                        i += 1
-
-                        plt.title("Electrogram")
-                        plt.xlabel("Time")
-                        plt.ylabel("Voltage(V)")
-                        if k == 0:
-                            plt.legend(frameon = False)
-                except:
-                    plt.ion()
-                    ser.close()
-
+                ax.clear()
+                if showATR:
+                    ax.plot([i[0] for i in pts], [i[1] for i in pts], label = 'Atrium', color='r')
+                if showVENT:
+                    ax.plot([i[0] for i in pts], [i[2] for i in pts], label = 'Ventricle', color='b')
+                
+                if count == 0:
+                    plt.legend(frameon = False, loc='upper left')
+                    
+                plt.title("Electrogram")
+                plt.xlabel("Time")
+                plt.ylabel("Voltage(V)")
+                ax.set_xlim(left=max(0, count*RX_Per - Hist_Duration), right = count*RX_Per)
+                plt.pause(0.01)
 
         # Creating submit button wth associated command
         myButton3 = Button(frame, text="Submit", padx = 30, pady = 5, bg="red", activebackground = "green", command = output_params)
@@ -1285,7 +1239,7 @@ def sign_in():
         clicked_2 = StringVar()
         clicked_2.set(egram_modes[0])
 
-        egram_options = OptionMenu(frame, clicked_2, *egram_modes, command = graph_data)
+        egram_options = OptionMenu(frame, clicked_2, *egram_modes)
         egram_options.config(bg = "lawn green", activebackground = "lawn green")
         egram_options["menu"].config(bg = "lawn green")
 
@@ -1295,7 +1249,7 @@ def sign_in():
         myButton5.grid(row = 2, column = 1)
 
         try:
-            myButton3.bind('<Destroy>', close_serial(serie))
+            myButton3.bind('<Destroy>', close_serial(SERIAL))
         except:
             pass
 
